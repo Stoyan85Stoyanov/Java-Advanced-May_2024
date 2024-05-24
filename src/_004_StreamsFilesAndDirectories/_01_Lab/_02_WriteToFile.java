@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class _02_WriteToFile {
     public static void main(String[] args) throws IOException {
 
-        String path = "C:\\Users\\User\\Desktop\\04. Java-Advanced-Files-and-Streams-Lab-Resources\\input.txt";
+        String path = "C:\\Users\\User\\Desktop\\04-Java-Advanced-Streams-Files-and-Directories-Resources\\04. Java-Advanced-Files-and-Streams-Lab-Resources\\input.txt";
 
         FileInputStream inputStream = new FileInputStream(path);
         FileOutputStream outputStream = new FileOutputStream("output.txt");
