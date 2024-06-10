@@ -24,8 +24,8 @@ public class GroomingSalon {
     }
 
     public Pet getPet(String name, String owner) {
-        return this.data.stream().filter(car -> car.getName().equals(name)
-                && car.getOwner().equals(owner)).findFirst().orElse(null);
+        return this.data.stream().filter(pet -> pet.getName().equals(name)
+                && pet.getOwner().equals(owner)).findFirst().orElse(null);
     }
 
     public int getCount() {
