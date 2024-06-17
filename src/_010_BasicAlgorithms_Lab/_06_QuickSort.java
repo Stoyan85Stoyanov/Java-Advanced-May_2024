@@ -2,7 +2,7 @@ package _010_BasicAlgorithms_Lab;
 
 import java.util.*;
 
-public class _06_Quicksort {
+public class _06_QuickSort {
     public static void main(String[] args) {
         Scanner scanner = new Scanner (System.in);
 
