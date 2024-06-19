@@ -1,4 +1,4 @@
-package Exams._07_JavaAdvancedRegularExam17June2023;
+package Exams._05_JavaAdvancedRegularExam17June2023;
 
 import java.util.*;
 import java.util.stream.Collectors;
