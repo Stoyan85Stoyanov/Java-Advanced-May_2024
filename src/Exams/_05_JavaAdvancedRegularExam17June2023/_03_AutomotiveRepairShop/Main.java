@@ -1,4 +1,4 @@
-package Exams._07_JavaAdvancedRegularExam17June2023._03_AutomotiveRepairShop;
+package Exams._05_JavaAdvancedRegularExam17June2023._03_AutomotiveRepairShop;
 
 public class Main {
     public static void main(String[] args) {
