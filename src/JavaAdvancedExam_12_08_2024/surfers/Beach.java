@@ -76,10 +76,11 @@ public class Beach {
 
     public String getMostExperiencedSurfer() {
         Surfer surfer = surfers.stream().max(Comparator.comparing(Surfer::getExperience)).orElse(null);
-        if (surfer != null) {
-            return String.format("%s is most experienced surfer with %d years experience.", surfer.getName(), surfer.getExperience());
-        } else {
+        if (surfer == null) {
             return "There are no surfers.";
+
+        } else {
+            return String.format("%s is most experienced surfer with %d years experience.", surfer.getName(), surfer.getExperience());
         }
     }
 
@@ -87,11 +88,9 @@ public class Beach {
        if (surfers.isEmpty()) {
            return "There are no surfers.";
        }
-
        List<String> surfersWithSurfboards =
                surfers.stream().filter(Surfer::getOwnsASurfBoard)
                        .map(Surfer::getName).collect(Collectors.toList());
-
 
        return "Surfers who have their own surfboards: " + String.join(", ", surfersWithSurfboards);
    }
@@ -112,10 +111,9 @@ public class Beach {
             if (surfer.getExperience() > 0) {
                 builder.append(surfer.getExperience()).append(" years experience.").append(System.lineSeparator());
             } else {
-                builder.append("no experience.");
+                builder.append("no experience.").append(System.lineSeparator());
             }
         }
-
         return builder.toString().trim();
     }
 }
