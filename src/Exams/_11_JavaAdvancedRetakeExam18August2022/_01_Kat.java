@@ -3,7 +3,7 @@ package Exams._11_JavaAdvancedRetakeExam18August2022;
 import java.util.ArrayDeque;
 import java.util.Scanner;
 
-public class Kat {
+public class _01_Kat {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
