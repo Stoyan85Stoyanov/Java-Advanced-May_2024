@@ -44,7 +44,6 @@ public class _02_Armory {
                     break;
             }
 
-
             if (myRow < 0 || myRow >= matrix.length || myCol < 0 || myCol >= matrix.length) {
                 System.out.println("I do not need more swords!");
                 System.out.printf("The king paid %d gold coins.%n", amountGoldCoins);
