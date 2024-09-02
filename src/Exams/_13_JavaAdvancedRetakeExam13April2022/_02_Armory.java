@@ -19,6 +19,7 @@ public class _02_Armory {
         int[] coordinates_M = findMirrorPosition_M(matrix);
 
         int amountGoldCoins = 0;
+
         String command = scanner.nextLine();
         while (true) {
 
