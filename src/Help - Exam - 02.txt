@@ -1,0 +1,242 @@
+
+package Exams._07_JavaAdvancedRegularExam17June2023;
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class _02_MouseInTheKitchen {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int[] input = Arrays.stream(scanner.nextLine().split(","))
+                .mapToInt(Integer::parseInt).toArray();                      // прочитаме размера на нашата матрица (5,5)
+
+        char[][] matrix = new char[input[0]][input[1]];                      // създаваме си матрица
+
+        fillMatrix(matrix, scanner);                                         // попълваме си нашата матрица (като си създаваме метод)
+
+        int [] position = findMyPosition(matrix);                           // в масив си запазваме позицията /row, col/ (страртова позиция на мишката)
+        int myRow = position[0];                                             // позиция на кой ред се намира мишката
+        int myCol = position[1];                                             // позиция на коя колона се намира мишката
+
+        int cheeseCount = getCheeseCount(matrix);                            // брой на сиренето от матрицата
+
+        String command = scanner.nextLine();                                 // прочитаме си една команда
+
+        while (!command.equals("danger")) {                                  // до получаване на командата /danger/
+
+            int newRow = myRow;                                              // новата позиция на реда на който се намира мишката
+            int newCol = myCol;                                              // новата позиция на колоната на която се намира мишката
+
+            switch (command) {
+                case "up" -> newRow--;
+                case "down" -> newRow++;
+                case "right" -> newCol++;
+                case "left" -> newCol--;
+            }
+
+            if (!isRowValid(newRow, matrix) || !isColValid(newCol, matrix)) {        // проверяваме дали позицията на реда и колоната не са валидни
+                System.out.println("No more cheese for tonight!");
+                printMatrix(matrix);                                                //отпечатваме текущото състояние на матрицата
+                return;
+            }
+
+            char symbol = matrix[newRow][newCol];                                    // дай ми символа на новят ред и новата колана (M, C, *, @, T)
+
+            if (symbol != '@') {                                                        // проверяваме дали символа в различен от @
+                matrix[newRow][newCol] = 'M';                                            // 1. Преместваме мишката на новата клетка
+                matrix[myRow][myCol] = '*';                                              // 2. Зануляваме старата  позиция на мишката
+                myRow = newRow;                                                          // 3. Обновявам координатите (ред и колона) на мишката
+                myCol = newCol;
+            }
+
+            switch (symbol) {
+                case 'C' -> {
+                    cheeseCount--;                                                                   // намаляме сиренето с 1
+                    if (cheeseCount == 0) {                                                           // проверяваме дали имаме сирена
+                        System.out.println("Happy mouse! All the cheese is eaten, good night!");
+                        printMatrix(matrix);                                                         //отпечатваме текущото състояние на матрицата
+                        return;
+                    }
+                }
+                case 'T' -> {
+                    System.out.println("Mouse is trapped!");
+                    printMatrix(matrix);                                                         //отпечатваме текущото състояние на матрицата
+                    return;
+                }
+            }
+            command = scanner.nextLine();
+        }
+
+        System.out.println("Mouse will come back later!");
+        printMatrix(matrix);                                                                     //отпечатваме текущото състояние на матрицата
+   }
+
+
+    private static void printMatrix(char[][] matrix) {
+
+        for (int row = 0; row < matrix.length; row++) {
+            for (int col = 0; col < matrix[row].length; col++) {
+                System.out.print(matrix[row][col]);
+            }
+            System.out.println();
+        }
+    }
+
+    private static boolean isColValid(int colIndex, char[][] matrix) {    // дали колоната е валидна
+
+        return  colIndex >= 0 && colIndex < matrix[0].length;
+    }
+
+    private static boolean isRowValid(int rowIndex, char[][] matrix) {    // дали колоната е валидна
+
+        return rowIndex >= 0 && rowIndex < matrix.length;
+    }
+
+    private static int[] findMyPosition(char[][] matrix) {
+
+        int[] myPosition = new int[2];                                     // масив от два числови елемента за нашата позиция
+        for (int row = 0; row < matrix.length; row++) {                     // обхожда се всеки един ред от матрицата (от първият до последният ред)
+            for (int col = 0; col < matrix[row].length; col++) {            // обхожда се всяка една колона от матрицата (от първата до последната колона)
+                if (matrix[row][col] == 'M') {                              // ако на колоната и реда от матрицата е позицията на нашата мишка
+                    myPosition[0] = row;                                    // запази на дадената позиция реда
+                    myPosition[1] = col;                                    // запази на дадената позиция колоната
+                }
+            }
+        }
+        return myPosition;
+    }
+
+    private static int getCheeseCount(char[][] matrix) {
+
+        int count = 0; // брояч на серенето
+
+        for (int row = 0; row < matrix.length; row++) {           // обхожда се всеки един ред от матрицата (от първият до последният ред)
+            for (int col = 0; col < matrix[row].length; col++) {  // обхожда се всяка една колона от матрицата (от първата до последната колона)
+                if (matrix[row][col] == 'C') {                    // ако на колоната и реда от матрицата има серене
+                    count++;                                      // увеличаваме брая на сирената
+                }
+            }
+        }
+        return count;                                            // връщаме стойността на брояча /сирене/
+    }
+
+        private static void fillMatrix ( char[][] matrix, Scanner scanner){
+            for (int row = 0; row < matrix.length; row++) {            // обхожваме от първият до последният ред на нашата матрица
+                char[] currentRow = scanner.nextLine().toCharArray();  // прочитаме ред и го преобразуваме на масив от символи, който ще бъде сегашният ред от символи
+                matrix[row] = currentRow;                              // прочетен ред matrix[row]
+
+
+            }
+        }
+    }
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+package Exams._04_JavaAdvancedRegularExam1October2023;
+
+import java.util.Scanner;
+
+public class _02_FishingCompetition {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner (System.in);
+
+        int n = Integer.parseInt(scanner.nextLine());  // размер на матрицата
+        char[][] matrix = new char[n][n];             // матрица от символи
+        fillMatrix(matrix, scanner);              // пълнене на матрицата
+
+
+        int[]  coordinates = findMyPosition(matrix);   // координати на които се намирам в момента
+        int myRow = coordinates[0];                    // реда на който се намирам
+        int myCol = coordinates[1];                    // колоната на която се намирам
+
+        int totalFish = 0;  // общо количество на рибата на събраната риба
+
+        String movement = scanner.nextLine();// посоки на движение  "up", "down", "left", and "right"
+        while (!movement.equals("collect the nets")) {
+
+            matrix[myRow][myCol] = '-';    // премахвам позицията на която съм бил
+
+             switch (movement) {
+                case "up" -> myRow--;
+                case "down" -> myRow++;
+                case "left" -> myCol--;
+                case "right" -> myCol++;
+            }
+
+            // след движенията по горе ако сме излезли извън матрицата си гарантираме, че ще се върнем на противоположната посока
+            // реда < 0                       /  реда = последния ред
+            // реда > последния               /  реда = 0
+            // колона < 0                     /  колоната = последната колона
+            // колоната > последната колона   /  колоната = 0
+
+            if (myRow < 0 ) {
+                myRow = matrix.length - 1;
+
+            } else if (myRow > matrix.length - 1) {
+                myRow = 0;
+            }
+
+            if (myCol < 0) {
+                myCol = matrix.length - 1;
+
+            } else if (myCol > matrix.length - 1) {
+                myCol = 0;
+            }
+
+            if (Character.isDigit(matrix[myRow][myCol])) {  // проверка дали един символ е цифра (пасаж от риба)
+                totalFish += Integer.parseInt(matrix[myRow][myCol] + ""); // преобразуване на символ в цяло число
+                matrix[myRow][myCol] = '-';
+
+            } else if (matrix[myRow][myCol] == 'W') {  // водовъртеж
+                System.out.printf("You fell into a whirlpool! The ship sank and you lost the fish you caught. Last coordinates of the ship: [%d,%d]", myRow, myCol);
+                return;
+            }
+            matrix[myRow][myCol] = 'S';  // позицията на която се намира  моят кораб
+
+            movement = scanner.nextLine();
+        }
+
+        if (totalFish >= 20) {   // Трябва поне 20 тона риба да се счита за успешен сезон  (кораба е достигнал квотата)
+            System.out.println("Success! You managed to reach the quota!");
+
+        }else {  // не е достигнал квотата   // (20 - totalFish) - колко риба не достига
+            System.out.printf("You didn't catch enough fish and didn't reach the quota! You need %d tons of fish more.%n", 20 - totalFish);
+
+        }
+
+        if (totalFish > 0) {   // 	Ако количеството на улова е по-голямо от нула
+            System.out.printf("Amount of fish caught: %d tons.%n", totalFish);
+        }
+        printMatrix (matrix);// Ако не си попаднал във водовъртеж , отпечатай матрицата
+    }
+
+    private static void printMatrix(char[][] matrix) {   // отпечатване на матрицата
+        for (int row = 0; row < matrix.length; row++) {
+            for (int col = 0; col < matrix[row].length; col++) {
+                System.out.print(matrix[row][col]);
+            }
+            System.out.println();
+        }
+    }
+
+    private static int[] findMyPosition(char[][] matrix) {    // координати на които се намирам в момента
+
+        int [] myCoordinates = new int[2]; // в целочислен масив с две числа в който запазваме координатите
+        for (int row = 0; row < matrix.length; row++) {  // от първия до последния ред
+            for (int col = 0; col < matrix[row].length; col++) {   // от нулевата до броя колони (последната)
+                 if (matrix[row][col] == 'S') {
+                     myCoordinates[0] = row;
+                     myCoordinates[1] = col;
+                 }
+            }
+        }
+        return myCoordinates;
+    }
+
+    private static void fillMatrix(char[][] matrix, Scanner scanner) {   // пълнене на матрицата
+        for (int row = 0; row < matrix.length; row++) {
+            matrix[row] = scanner.nextLine().toCharArray();
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,968 @@
+---------------------------------------------------------------------------------------------- 17.06.2023
+ public void addVehicle(Vehicle vehicle) {          добавя обект към колекцията от превозни средства, ако капацитетът го позволява
+        if (this.vehicles.size() < this.capacity) {
+            this.vehicles.add(vehicle);
+        }
+    }
+    public boolean removeVehicle(String vin) {      премахва превозно средство по даден vin, ако има такъв, и връща булево (true, ако е премахнато, в противен случай – false)
+        return vehicles.removeIf(vehicles -> vehicles.getVIN().equals(vin));
+    }
+
+    public int getCount() {           връща броя на автомобилите, регистрирани в RepairShop
+        return this.vehicles.size();
+    }
+
+    public Vehicle getLowestMileage() {      връща превозното средство с най-ниска стойност на свойството Mileage
+        return vehicles.stream().min(Comparator.comparing(Vehicle::getMileage)).orElse(null);
+    }
+
+    public String report() {         връща низ в следния формат
+        StringBuilder text = new StringBuilder();
+        text.append("Vehicles in the preparatory").append(":").append(System.lineSeparator());
+
+        for (Vehicle vehicle : vehicles) {
+            text.append(vehicle.toString()).append(System.lineSeparator());
+        }
+
+        return text.toString().trim();
+    }
+
+--------------------------------------------------------------------------------------------
+Damage: Oil leakage, Vehicle: 1HGCM82633A123456 (50000 km)
+false
+true
+4
+5
+Damage: Cylinder misfire, Vehicle: WAUZZZ8K9FA123456 (66000 km)
+Vehicles in the preparatory:
+Damage: Overheating issue, Vehicle: 5YJSA1CN7DFP12345 (80000 km)
+Damage: Coolant leakage, Vehicle: JM1GJ1W56F1234567 (120000 km)
+Damage: Timing belt failure, Vehicle: 2C3CDXAT4CH123456 (95000 km)
+Damage: Cylinder misfire, Vehicle: WAUZZZ8K9FA123456 (66000 km)
+Damage: Transmission failure, Vehicle: 1G1BL52P3RR123456 (150000 km)
+
+---------------------------------------------------------------------------------------------
+ public boolean addChild(Child child) {   Добавя дете към системния регистър, ако има място за него и връща true. Ако няма място за друго дете, връща false
+        if (this.getChildrenCount() == this.capacity) {
+            return false;
+        }
+        this.registry.add(child);
+        return true;
+    }
+
+    public boolean removeChild(String firstName) {   премахва дете по зададено firstName. Ако премахването е успешно, връща true, в противен случай връща false
+        return registry.removeIf(registry -> registry.getFirstName().equals(firstName));
+    }
+
+    public int getChildrenCount () {      Връща броя на всички регистрирани деца
+        return this.registry.size();
+    }
+
+    public Child getChild(String firstName) {        Връща детето с даденото първо име
+        for (Child child : this.registry) {
+            if (child.getFirstName().equals(firstName)) {
+                return child;
+            }
+        }
+        return null;
+    }
+
+
+/// ---> Подрежда децата по възраст във възходящ ред, след това по собствено име във възходящ ред,
+        след това по фамилно име във възходящ ред и връща низ в следния формат
+
+    public String registryReport() {
+        List<Child> sortedChildren = this.registry.stream()
+                .sorted(Comparator.comparing(Child::getAge).thenComparing(Child::getFirstName).thenComparing(Child::getLastName))
+                .toList();
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("Registered children in ").append(this.name).append(":");
+
+        for (Child child : sortedChildren) {
+            builder.append(System.lineSeparator()).append("--").append(System.lineSeparator());
+            builder.append(child.toString());
+        }
+
+        return builder.toString().trim();
+    }
+
+-------------------------------------------------------------------------------------------------------------------
+true
+true
+true
+true
+true
+true
+true
+true
+false
+true
+true
+true
+false
+false
+5
+Child: Tom Todorov, Age: 2, Contact info: Zendaya - 0799
+Child: Greta Thunberg, Age: 3, Contact info: Boris - 0999
+Registered children in Sunshine:
+--
+Child: Sara Gomez, Age: 2, Contact info: Victor - 0998
+--
+Child: Tom Todorov, Age: 2, Contact info: Zendaya - 0799
+--
+Child: Greta Thunberg, Age: 3, Contact info: Boris - 0999
+--
+Child: Lilyana Petrova, Age: 3, Contact info: Selena - 0899
+--
+Child: Veselina Kostadinova, Age: 3, Contact info: Nikolas - 0788
+
+----------------------------------------------------------------------------------------- 18.08.2022
+public void add(Elephant elephant) {                     добавя обект към данните, ако има празно място за слона
+        if (this.data.size() < this.capacity) {
+            this.data.add(elephant);
+        }
+    }
+    public boolean remove(String name) {           премахва слона по дадено име, ако има такова, и връща boolean
+        return data.removeIf(data -> data.getName().equals(name));
+    }
+
+    public Elephant getElephant(String retiredFrom) {     връща оттегления слон от даденото място или null, ако такъв слон не съществува
+        for (Elephant elephant : this.data) {
+            if (elephant.getRetiredFrom().equals(retiredFrom)) {
+                return elephant;
+            }
+        }
+        return null;
+    }
+
+    public Elephant getOldestElephant() {       връща най-стария Elephant
+        return this.data.stream().max(Comparator.comparing(Elephant::getAge)).orElse(null);
+    }
+
+    public int getAllElephants () {             връща броя на слоновете
+        return this.data.size();
+    }
+
+    public String getReport() {                  връща String в следния формат
+        StringBuilder text = new StringBuilder();
+        text.append("Saved elephants in the park").append(":").append(System.lineSeparator());
+
+        for (Elephant elephant : data) {
+            text.append(String.format("%s came from: %s", elephant.getName(), elephant.getRetiredFrom()))
+                    .append(System.lineSeparator());
+        }
+
+        return text.toString().trim();
+    }
+
+-----------------------------------------------------------------------------------------------------
+Bobby 10 - Thailand Zoo
+true
+false
+Lola 7 - National Circus of Thailand
+Bibi 5 - Private Zoo
+2
+Saved elephants in the park:
+Bibi came from: Private Zoo
+Lola came from: National Circus of Thailand
+
+------------------------------------------------------------------------------------------------ 25.06.2022
+ public void addExercise(Exercise exercise) {                   добавя обект към упражненията, ако все още има място в тренировъчния лист
+        if (this.exercises.size() < this.exerciseCount) {
+            this.exercises.add(exercise);
+        }
+    }
+
+    public boolean removeExercise(String name, String muscle) {      премахва упражнението по дадено име и мускул, ако има такъв, и връща boolean
+        return exercises.removeIf(exercise -> exercise.getName().equals(name) && exercise.getMuscle().equals(muscle));
+    }
+
+    public Exercise getExercise(String name, String muscle) {     връща упражнението с даденото име и мускул или null, ако няма такова упражнение
+        return this.exercises.stream().filter(exercise -> exercise.getName().equals(name)
+                && exercise.getMuscle().equals(muscle)).findFirst().orElse(null);
+    }
+
+    public Exercise getMostBurnedCaloriesExercise() {     връща упражнението, което е изгорило най-много калории или нула, ако няма упражнения
+        Exercise exercise = null;
+        int calories = 0;
+
+        if (this.exercises.size() > 0) {
+            for (Exercise ex : this.exercises) {
+                if (ex.getBurnedCalories() > calories) {
+                    calories = ex.getBurnedCalories();
+                }
+            }
+            for (Exercise ex : this.exercises) {
+                if (ex.getBurnedCalories() == calories) {
+                    exercise = ex;
+                    break;
+                }
+            }
+        }
+        return exercise;
+    }
+
+    public int getExerciseCount() {              връща броя на упражненията
+        return this.exercises.size();
+    }
+
+    public String getStatistics() {                  връща String в следния формат
+        StringBuilder text = new StringBuilder();
+        text.append("Workout type").append(": ").append(this.type).append(System.lineSeparator());
+        for (Exercise exercise : exercises) {
+            text.append(exercise.toString()).append(System.lineSeparator());
+        }
+
+        return text.toString().trim();
+    }
+
+-------------------------------------------------------------------------------------------------------------
+Exercise: Bench Press, chest, 30
+false
+true
+null
+Exercise: Squats, legs, 60
+Exercise: Deadlift, back, 50
+3
+true
+Workout type: strength
+Exercise: Deadlift, back, 50
+Exercise: Squats, legs, 60
+
+----------------------------------------------------------------------------------------------------- 13.04.2022
+ public void addEgg(Egg egg) {                      добавя обект към данните, ако има място за него
+         if (this.data.size() < this.capacity) {
+             this.data.add(egg);
+         }
+     }
+
+     public boolean removeEgg(String color) {      премахва яйце по даден цвят, ако има такова, и връща булево (true, ако е премахнато, в противен случай – false)
+         return data.removeIf(employee -> employee.getColor().equals(color));
+     }
+
+     public Egg getStrongestEgg() {               връща най-силното яйце
+         return data.stream().max(Comparator.comparing(Egg::getStrength)).orElse(null);
+     }
+
+     public Egg getEgg(String color) {           връща яйцето с даден цвят
+         for (Egg egg : this.data) {
+             if (egg.getColor().equals(color)) {
+                 return egg;
+             }
+         }
+         return null;
+     }
+     public int getCount() {                  връща броя на яйцата
+         return this.data.size();
+     }
+
+     public String report() {                 връща низ в следния формат (разпечатва яйцата по ред на появяване)
+         StringBuilder text = new StringBuilder();
+         text.append(this.material).append(" basket contains:").append(System.lineSeparator());
+
+         for (Egg egg : data) {
+             text.append(egg.toString()).append(System.lineSeparator());
+         }
+
+         return text.toString().trim();
+     }
+ ----------------------------------------------------------------------------------------------------------------
+ Red egg, with 10 strength and oval shape.
+ false
+ Red egg, with 10 strength and oval shape.
+ Green egg, with 9 strength and pointy shape.
+ Wood basket contains:
+ Red egg, with 10 strength and oval shape.
+ Green egg, with 9 strength and pointy shape.
+
+ ----------------------------------------------------------------------------------------------------- 15.12.2021
+  public int getFishInPool() {            връща броя на рибите в текущия басейн
+        return fishInPool.size();
+    }
+
+    public void add(Fish fish) {          добавяне на обекта, ако няма риба със същото име и ако има достатъчно място за нея
+        if (this.fishInPool.size() < this.capacity) {
+            this.fishInPool.add(fish);
+        }
+    }
+    public boolean remove(String name) {     премахва риба от пула с даденото име, ако съществува такава, и връща булево значение, ако изтриването е успешно
+        return fishInPool.removeIf(person -> person.getName().equals(name));
+    }
+
+    public Fish findFish(String name) {       връща риба с даденото име, тя не съществува return null
+        for (Fish fish : this.fishInPool) {
+            if (fish.getName().equals(name)) {
+                return fish;
+            }
+        }
+        return null;
+    }
+    public String report() {                     връща информация за аквариума и рибките в него в следния формат
+        StringBuilder text = new StringBuilder();
+        text.append("Aquarium: ").append(this.name).append(" ^ Size: ").append(this.size).append(System.lineSeparator());
+
+        for (Fish fish : fishInPool) {
+            text.append(fish.toString()).append(System.lineSeparator());
+        }
+
+        return text.toString().trim();
+    }
+
+-----------------------------------------------------------------------------------------------------------
+Fish: Goldy
+Color: gold
+Number of fins: 4
+true
+Aquarium: Ocean ^ Size: 15
+Fish: Dory
+Color: blue
+Number of fins: 2
+Fish: Nemo
+Color: orange
+Number of fins: 5
+
+------------------------------------------------------------------------------------------------------ 23.10.2021
+public void add(Person person) {                     добавя обект към списъка, ако има място за него
+        if (this.roster.size() < this.capacity) {
+            this.roster.add(person);
+        }
+    }
+    public boolean remove(String name) {              премахва лице по име, ако има такова, и връща булево
+        return roster.removeIf(person -> person.getName().equals(name));
+    }
+    public Person getPerson(String name, String hometown) {            връща хората с дадено име и роден град или null, ако няма такъв човек
+        return this.roster.stream().filter(person -> person.getName().equals(name)
+                && person.getHometown().equals(hometown)).findFirst().orElse(null);
+    }
+    public int getCount() {                    връща броя на хората
+        return this.roster.size();
+    }
+    public String getStatistics() {          връща String в следния формат --->  "The people in the hotel {name} are: {Person1} {Person2}
+        StringBuilder text = new StringBuilder();
+        text.append("The people in the hotel ").append(this.name).append(" are:").append(System.lineSeparator());
+        for (Person roster : roster) {
+            text.append(roster.toString()).append(System.lineSeparator());
+        }
+
+        return text.toString().trim();
+    }
+
+-----------------------------------------------------------------------------------------------------
+Person Mark: 11111, Age: 41, Hometown: Sofia
+1
+false
+Person Lucy: 54122, Age: 31, Hometown: Birmingham
+null
+5
+true
+The people in the hotel Hilton are:
+Person Mark: 11111, Age: 41, Hometown: Sofia
+Person Lizzy: 31311, Age: 24, Hometown: Varna
+Person Lucy: 54122, Age: 31, Hometown: Birmingham
+Person Maria: 66611, Age: 41, Hometown: Sofia
+
+------------------------------------------------------------------------------------------------- 18.08.2021
+    public void addEmployee (Employee employee) {   добавя обект към данните, ако има място за него/нея
+        if (this.employees.size() < this.capacity) {
+            this.employees.add(employee);
+        }
+    }
+
+    public boolean removeEmployee(String name) {     премахва служител по име, ако има такъв, и връща boolean
+        return employees.removeIf(pet -> pet.getName().equals(name));
+    }
+
+    public Employee getOldestEmployee() {           връща най-възрастния служител
+        return this.employees.stream().max(Comparator.comparing(Employee::getAge)).orElse(null);
+    }
+
+    public Employee getEmployee(String name) {       връща служителя с даденото име
+        for (Employee employee : this.employees) {
+            if (employee.getName().equals(name)) {
+                return employee;
+            }
+        }
+        return null;
+    }
+    public int getCount () {                връща броя на служителите
+        return this.employees.size();
+    }
+
+    public String report() {               връща низ в следния формат
+        StringBuilder text = new StringBuilder();
+        text.append("Employees working at Cafe ").append(this.name).append(":").append(System.lineSeparator());
+
+        for (Employee employee : employees) {
+            text.append(employee.toString()).append(System.lineSeparator());
+        }
+
+        return text.toString().trim();
+    }
+
+-----------------------------------------------------------------------------------------------------------------
+ Employee: Alexander, 30 from Bulgaria
+ false
+ Employee: Alexander, 30 from Bulgaria
+ 3
+ true
+ Employees working at Cafe Costa:
+ Employee: Alexander, 30 from Bulgaria
+ Employee: Sara, 24 from UK
+
+ --------------------------------------------------------------------------------------------------- 26.06.2021
+    public void add(Pet pet) {             добавя обект към данните, ако има свободно място в салона за домашни любимци
+        if (this.data.size() < this.capacity) {
+            this.data.add(pet);
+        }
+    }
+
+    public boolean remove(String name) {       премахва домашния любимец по зададено име, ако има такова, и връща булево значение
+        return data.removeIf(pet -> pet.getName().equals(name));
+    }
+
+    public Pet getPet(String name, String owner) {     връща домашния любимец с даденото име и собственик или null, ако такъв домашен любимец не съществува
+        return this.data.stream().filter(pet -> pet.getName().equals(name)
+                && pet.getOwner().equals(owner)).findFirst().orElse(null);
+    }
+
+    public int getCount() {                   връща броя на домашните любимци
+        return this.data.size();
+    }
+
+    public String getStatistics() {            връща String в следния формат
+        StringBuilder text = new StringBuilder();
+        text.append("The grooming salon has the following clients").append(":").append(System.lineSeparator());
+        for (Pet pet : data) {
+            text.append(pet.getName()).append(" ").append(pet.getOwner()).append(System.lineSeparator());
+        }
+
+        return text.toString().trim();
+    }
+---------------------------------------------------------------------------------------------------------------
+Ellias 5 - (Tim)
+true
+false
+Bella 2 - (Mia)
+2
+The grooming salon has the following clients:
+Bella Mia
+Zak Jon
+
+---------------------------------------------------------------------------------------------------------   14.04.2021
+public int getStudentCount() {                           връща броя на студентите в университета
+        return this.students.size();
+    }
+
+public String registerStudent(Student student) {           добавя обект към студентите, ако има място за него
+        StringBuilder text = new StringBuilder();
+
+        if (this.students.size() < capacity) {             ако студентът вече е в университета
+            if (this.students.contains(student)) {
+                text.append("Student is already in the university");
+
+            } else {                                       ако ученикът е добавен успешно
+                this.students.add(student);
+                text.append("Added student ").append(student.getFirstName()).append(" ").append(student.getLastName());
+            }
+
+           } else {                                        ако университетът е пълен
+                text.append("No seats in the university");
+           }
+
+        return text.toString();
+    }
+
+    public String dismissStudent(Student student) {    премахва ученика
+        StringBuilder text = new StringBuilder();
+
+        if (this.students.contains(student)) {         премахва ученика + принтиране на текст
+            text.append("Removed student ").append(student.getFirstName()).append(" ").append(student.getLastName());
+            this.students.remove(student);
+
+        } else {                                       ако студентът не е в университета
+            text.append("Student not found");
+
+        }
+        return text.toString();
+    }
+
+    public Student getStudent(String firstName, String lastName) {      връща ученика с дадените имена
+        return this.students
+                .stream()
+                .filter(student -> student.getFirstName().equals(firstName) && student.getLastName().equals(lastName))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public String getStatistics() {                      връща String в следния формат
+        StringBuilder text = new StringBuilder();
+        this.students.forEach(student -> text.append("==Student: First Name = ").append(student.getFirstName())
+                .append(", Last Name = ").append(student.getLastName()).append(", Best Subject = ")
+                .append(student.getBestSubject()).append(System.lineSeparator()));
+
+        return text.toString().trim();
+    }
+
+----------------------------------------------------------------------------------------------------
+Student: John Smith, Astrology
+10
+Added student John Smith
+Removed student John Smith
+Student not found
+Student: Rihanna Fenty, Music
+3
+==Student: First Name = Anna, Last Name = Cameron, Best Subject = Geometry
+==Student: First Name = Samy, Last Name = Johnson, Best Subject = Algebra
+==Student: First Name = Rihanna, Last Name = Fenty, Best Subject = Music
+
+------------------------------------------------------------------------------------------------------- 20.02.2021
+public void add(Car car) {                           добавя обект към данните, ако има празна клетка за автомобила
+        if (this.data.size() < this.capacity) {
+            this.data.add(car);
+        }
+    }
+    public boolean buy(String manufacturer, String model) {    премахва автомобила по даден производител и модел, ако има такъв, и връща boolean
+        return data.removeIf(car -> car.getManufacturer().equals(manufacturer)
+                && car.getModel().equals(model));
+    }
+    public Car getLatestCar() {                              връща последната кола (по година) или null, ако няма коли
+        return this.data.stream().max(Comparator.comparing(Car::getYear))
+                .orElse(null);
+    }
+    public Car getCar(String manufacturer, String model) {     връща автомобила с даден производител и модел или null, ако няма такъв автомобил
+        return this.data.stream().filter(car -> car.getManufacturer().equals(manufacturer)
+                && car.getModel().equals(model)).findFirst().orElse(null);
+    }
+    public int getCount() {                                  връща броя на колите
+        return this.data.size();
+    }
+    public String getStatistics() {                         връща String в следния формат
+        StringBuilder text = new StringBuilder();
+        text.append("The cars are in a car dealership ").append(this.name).append(":").append(System.lineSeparator());
+        for (Car car : data) {
+            text.append(car.toString()).append(System.lineSeparator());
+        }
+
+        return text.toString().trim();
+    }
+
+---------------------------------------------------------------------------------------------------------
+Volvo XC70 (2010)
+false
+true
+Peugeot 307 (2011)
+Audi S4 (2005)
+2
+The cars are in a car dealership Autofest:
+Peugeot 307 (2011)
+Audi S4 (2005)
+------------------------------------------------------------------------------------------------ 16.12.2020
+public void add(Employee employee) {                  добавя субект към данните, ако има място за него/нея
+        if (this.employees.size() < this.capacity) {
+            this.employees.add(employee);
+        }
+    }
+    public boolean remove(String name) {            премахва служител по име, ако има такъв, и връща boolean
+        return employees.removeIf(employee -> employee.getName().equals(name));
+    }
+    public Employee getOldestEmployee() {            връща най-възрастния служител
+        return this.employees.stream().max(Comparator.comparing(Employee::getAge)).orElse(null);
+    }
+    public Employee getEmployee(String name) {      връща служителя с даденото име
+        for (Employee employee : this.employees) {
+            if (employee.getName().equals(name)) {
+                return employee;
+            }
+        }
+        return null;
+    }
+    public int getCount () {                     връща броя на служителите
+        return this.employees.size();
+    }
+
+    public String report() {                     връща низ в следния формат
+        StringBuilder text = new StringBuilder();
+        text.append("Employees working at Bakery ").append(this.name).append(":").append(System.lineSeparator());
+
+        for (Employee employee : employees) {
+            text.append(employee.toString()).append(System.lineSeparator());
+        }
+
+        return text.toString().trim();
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+Employee: Stephen, 40 (Bulgaria)
+false
+Employee: Stephen, 40 (Bulgaria)
+Employee: Stephen, 40 (Bulgaria)
+2
+Employees working at Bakery Barny:
+Employee: Stephen, 40 (Bulgaria)
+Employee: Mark, 34 (UK)
+
+---------------------------------------------------------------------------------- 19.08.2020
+  public void add(Pet pet) {                       добавя обект към данните, ако има празна клетка за домашния любимец
+        if (this.data.size() < this.capacity) {
+            this.data.add(pet);
+        }
+    }
+    public boolean remove(String name) {             премахва домашния любимец по зададено име, ако има такова, и връща булево значение
+        return data.removeIf(pet -> pet.getName().equals(name));
+    }
+    public Pet getPet(String name, String owner) {      връща домашния любимец с зададеното име и собственик или null, ако такъв домашен любимец не съществува
+        return this.data.stream().filter(pet ->pet.getName().equals(name)
+                && pet.getOwner().equals(owner)).findFirst().orElse(null);
+    }
+    public Pet getOldestPet() {                        връща най-стария домашен любимец
+        return this.data.stream().max(Comparator.comparing(Pet::getAge)).orElse(null);
+    }
+    public int getCount () {                           връща броя на домашните любимци
+        return this.data.size();
+    }
+    public String getStatistics() {                     връща String в следния формат
+        StringBuilder text = new StringBuilder();
+        text.append("The clinic has the following patients").append(":").append(System.lineSeparator());
+        for (Pet pet : data) {
+            text.append(pet.getName()).append(" ").append(pet.getOwner()).append(System.lineSeparator());
+        }
+
+        return text.toString().trim();
+    }
+
+------------------------------------------------------------------------------------------
+Ellias 5 (Tim)
+true
+false
+Zak 4 (Jon)
+Bella 2 (Mia)
+2
+The clinic has the following patients:
+Bella Mia
+Zak Jon
+
+
+------------------------------------------------------------------------------------------- 28.06.2020
+ public void add(Car car) {                       добавя обект към данните, ако има празна клетка за автомобила
+        if (this.data.size() < this.capacity) {
+            this.data.add(car);
+        }
+    }
+
+    public boolean remove(String manufacturer, String model) {   премахва автомобила по даден производител и модел, ако има такъв, и връща boolean
+        return data.removeIf(models -> models.getManufacturer().equals(manufacturer) && models.getModel().equals(model));
+    }
+
+    public Car getLatestCar() {      връща последната кола (по година) или null, ако няма коли
+        return this.data.stream().max(Comparator.comparing(Car::getYear))
+                .orElse(null);
+    }
+
+    public Car getCar(String manufacturer, String model) {    връща автомобила с даден производител и модел или null, ако няма такъв автомобил
+        return this.data.stream().filter(car -> car.getManufacturer().equals(manufacturer)
+                && car.getModel().equals(model)).findFirst().orElse(null);
+    }
+
+    public int getCount() {      връща броя на колите
+        return this.data.size();
+    }
+
+    public String getStatistics() {              връща String в следния формат
+        StringBuilder text = new StringBuilder();
+        text.append("The cars are parked in ").append(this.type).append(":").append(System.lineSeparator());
+        for (Car car : data) {
+            text.append(car.toString()).append(System.lineSeparator());
+        }
+
+        return text.toString().trim();
+    }
+
+----------------------------------------------------------------------------------
+Volvo XC70 (2010)
+false
+true
+Peugeot 307 (2011)
+Audi S4 (2005)
+2
+The cars are parked in Underground parking garage:
+Peugeot 307 (2011)
+Audi S4 (2005)
+
+ ---------------------------------------------------------------------------------------- 22.02.2020
+ public void addPlayer(Player player) {                добавя обект към списъка, ако има място за него
+        if (this.roster.size() < this.capacity) {
+            this.roster.add(player);
+        }
+    }
+    public boolean removePlayer(String name) {         премахва играч по зададено име, ако има такъв, и връща булево
+        return roster.removeIf(player -> player.getName().equals(name));
+    }
+
+    public void promotePlayer(String name) {      повишава (задава ранга му на "Член") първия играч с даденото име. Ако играчът вече е "Член", не правете нищо.
+        for (Player player : this.roster) {
+            if (player.getName().equals(name)) {
+                player.setRank("Member");
+                break;
+            }
+        }
+    }
+    public void demotePlayer(String name) {     понижава (задава ранга му на "Пробен") първия играч с даденото име. Ако играчът вече е „Пробен“, не правете нищо
+        for (Player player : this.roster) {
+            if (player.getName().equals(name)) {
+                player.setRank("Trial");
+                break;
+            }
+        }
+    }
+    public Player[] kickPlayersByClass(String clazz) {    премахва всички играчи от даден клас и връща всички премахнати играчи от този клас като масив
+        Player[] players = this.roster.stream().filter(player -> player.getClazz().equals(clazz)).toArray(Player[]::new);
+
+        for (Player player : players) {
+            this.roster.removeIf(p->p.getClazz().equals(clazz));
+        }
+        return players;
+    }
+
+    public int count() {                      връща броя на играчите
+        return this.roster.size();
+    }
+
+    public String report() {                  връща String в следния формат
+        StringBuilder text = new StringBuilder();
+        text.append("Players in the guild: ").append(this.getName()).append(":").append(System.lineSeparator());
+
+        for (Player player : roster) {
+            text.append(player.toString()).append(System.lineSeparator());
+        }
+
+        return text.toString().trim();
+    }
+
+----------------------------------------------------------------------------------------
+Player Mark: Rogue
+Rank: Trial
+Description: n/a
+1
+false
+true
+Mark Mike Players in the guild: Weekend Raiders:
+Player Lizzy: Priest
+Rank: Member
+Description: Best healer EU
+Player Marlin: Mage
+Rank: Trial
+Description: n/a
+
+
+--------------------------------------------------------------------------- // 17.12.2019
+public void add(Present present) {             добавя обект към данните, ако има място за него
+        if (this.data.size() < capacity) {
+            this.data.add(present);
+        }
+    }
+    public boolean remove(String name) {        премахва презент по зададено име, ако има такъв, и връща булево
+        return this.data.removeIf(bag -> bag.getName().equals(name));
+    }
+    public Present heaviestPresent() {          връща най-тежкото
+        Present present = null;
+        for (Present p : this.data) {
+            if (present==null){
+              present=p;
+            }else if (p.getWeight() > present.getWeight()) {
+                present = p ;
+            }
+        }
+        return present;
+    }
+
+    public Present getPresent(String name) {         връща с даденото име
+        for (Present present : this.data) {
+            if (present.getName().equals(name)) {
+                return present;
+            }
+        }
+        return null;
+    }
+    public String report() {                      връща низ в следния формат
+        StringBuilder sb = new StringBuilder();
+        String firstLine = String.format("%s bag contains:", this.color);
+        sb.append(firstLine).append(System.lineSeparator());
+        for (Present present : this.data) {
+                sb.append(present.toString()).append(System.lineSeparator());
+
+        }
+        return sb.toString();
+    }
+
+--------------------------------------------------------------------------------------------
+Present Doll (0,40) for a girl
+Present Train (2,00) for a boy
+Present Doll (0,40) for a girl
+2
+black bag contains:
+Present Doll (0,40) for a girl
+Present Train (2,00) for a boy
+
+------------------------------------------------------------------------------------- // 26.10.2019
+    public void add(Rabbit rabbit) {          добавя обект към данните, ако има място за него
+        if (this.data.size() < capacity) {
+            this.data.add(rabbit);
+        }
+    }
+
+    public boolean removeRabbit(String name) {      премахва заек по зададено име, ако има такъв, и връща булево
+        return this.data.removeIf(rabbit -> rabbit.getName().equals(name));
+    }
+
+    public Rabbit removeSpecies(String species) {     премахва всички зайци по даден вид
+        for (Rabbit rabbit : this.data) {
+            if (rabbit.getSpecies().equals(species)) {
+                removeRabbit(species);
+            }
+        }
+        return null;
+    }
+
+
+    public Rabbit sellRabbit(String name) {        продава (задава наличното му свойство на false, без да го премахва от колекцията) първия заек с даденото име, също връща заека
+
+        for (Rabbit rabbit : this.data) {
+            if (rabbit.getName().equals(name)) {
+                rabbit.setAvailable(false);
+                return rabbit;
+            }
+        }
+        return null;
+    }
+
+    public List<Rabbit> sellRabbitBySpecies(String species)  {   продава и връща всички зайци от този вид като списък
+
+        List<Rabbit> soldRabbits = new ArrayList<>();
+        for (Rabbit rabbit : this.data) {
+            if (rabbit.getSpecies().equals(species)) {
+                rabbit.setAvailable(false);
+                soldRabbits.add(rabbit);
+            }
+        }
+        return soldRabbits;
+    }
+
+    public int count() {                                   връща броя на зайците
+        return this.data.size();
+    }
+
+    public String report() {                              връща String в следния формат, включващ само непродадени зайци
+        StringBuilder sb = new StringBuilder();
+        String firstLine = String.format("Rabbits available at %s:", this.name);
+        sb.append(firstLine).append(System.lineSeparator());
+        for (Rabbit rabbit : this.data) {
+            if (rabbit.isAvailable()) {
+                sb.append(rabbit.toString()).append(System.lineSeparator());
+            }
+        }
+        return sb.toString();
+    }
+
+-------------------------------------------------------------------------------------------------
+Rabbit (Blanc de Hotot): Fluffy
+1
+false
+Rabbit (Brazilian): Bunny
+Jumpy
+Puffy
+Rabbits available at Wildness:
+Rabbit (Blanc de Hotot): Fluffy
+Rabbit (Brazilian): Marlin
+------------------------------------------------------------------------------------------------------------ 10.04.2024
+    private String name;
+    private int capacity;
+    private List<Spacecraft> spacecrafts;
+
+    public LaunchPad(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
+        this.spacecrafts = new ArrayList<>();
+
+    }
+
+    public void addSpacecraft(Spacecraft spacecraft) {    добавя обект към данните if пространство за него
+        if (this.spacecrafts.size() < this.capacity) {
+            this.spacecrafts.add(spacecraft);
+
+        } else {     противен случай отпечатайте
+            System.out.println("This launchpad is at full capacity!");
+        }
+    }
+
+    public boolean removeSpacecraft(String name) {  премахва космически кораб по зададено име, ако такова съществува , и връща булево (true, ако е премахнато, в противен случай – false)
+        return spacecrafts.removeIf(spacecrafts -> spacecrafts.getName().equals(name));
+    }
+
+    public String getHeaviestSpacecraft() {     връща String най -тежкия космически кораб по тегло в дадения стартов панел в следния формат
+        Spacecraft heaviestSpacecraft = Collections.max(spacecrafts, Comparator.comparing(Spacecraft::getWeight));
+        return String.format("%s - %dkg.", heaviestSpacecraft.getName(), heaviestSpacecraft.getWeight());
+    }
+
+    public Spacecraft getSpacecraft(String name) {    връща космическия кораб с даденото име , в противен случай – връща null
+        for (Spacecraft spacecraft : this.spacecrafts) {
+            if (spacecraft.getName().equals(name)) {
+                return spacecraft;
+            }
+        }
+        return null;
+    }
+
+    public int getCount() {                 връща брой космически кораби в дадената стартова площадка
+        return this.spacecrafts.size();
+    }
+
+    public List<Spacecraft> getSpacecraftsByMissionType(String missionType) {   се завръща списък – колекция от космически кораби , които държи космическите кораби, които имат същото missionType в дадения панел за стартиране
+
+        List<Spacecraft> spacecraftsByMissionType = spacecrafts.stream().filter(spacecraft -> spacecraft.getMissionType().equals(missionType)).toList();
+
+        if (spacecraftsByMissionType.isEmpty()) {    В случай че няма космически кораби да отговорят на това условие (missionType) печат
+            System.out.println("There are no spacecrafts to respond this criteria.");
+        }
+        return spacecraftsByMissionType;
+    }
+
+    public String getStatistics() {   връща низ в следния формат ( отпечатайте космическите кораби по реда на добавяне )
+
+        StringBuilder builder = new StringBuilder();
+        String launchPadOutput = String.format("Spacecrafts launched from %s:", this.name);
+        builder.append(launchPadOutput).append(System.lineSeparator());
+
+        if (spacecrafts.isEmpty()) {   Ако няма космически кораби в някой печат на стартовата площадка
+            builder.append("none");
+
+        } else {       Ако има космически кораби в някой печат на стартовата площадка
+            int spacecraftCounter = 1;
+
+            for (Spacecraft spacecraft : spacecrafts) {
+                String spacecraftOutput = String.format("%d. %s", spacecraftCounter, spacecraft.getName());
+                builder.append(spacecraftOutput).append(System.lineSeparator());
+                spacecraftCounter++;
+            }
+        }
+        return builder.toString();
+    }
+
+-------------------------------------------------------------------------------------------------------------
+This launchpad is at full capacity!
+Galileo
+Cassini-Huygens
+Magellan
+Voyager-1
+true
+0
+The mission of Galileo was to reach Europa and to study Jupiter and its mysterious moons
+Magellan - 3445kg.
+Spacecrafts launched from Kennedy Space Center:
+1. Galileo
+2. Cassini-Huygens
+3. Magellan
+
+Spacecrafts launched from Cape Canaveral Air Force Station:
+none
+---------------------------------------------------------------------------------------------------------------

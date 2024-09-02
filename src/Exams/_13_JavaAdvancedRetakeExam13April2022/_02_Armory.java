@@ -50,7 +50,6 @@ public class _02_Armory {
                 System.out.printf("The king paid %d gold coins.%n", amountGoldCoins);
                 printMatrix(matrix);
                 break;
-
             }
 
             if (Character.isDigit(matrix[myRow][myCol])) {

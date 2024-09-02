@@ -1,0 +1,1651 @@
+
+        String [] firstLine = scanner.nextLine().split("\\s+"); -- прочитам ред
+        ArrayDeque <Integer> firstBoxQueue = new ArrayDeque<>(); --  създаване на опашка
+        for (String input : firstLine) {                         -- обхождам първият ред на входните данни за да вземем всяко число
+            firstBoxQueue.offer(Integer.parseInt(input));         -- пълнене на опашка
+        }
+
+        String [] secondLine = scanner.nextLine().split("\\s+");   -- прочитане на ред
+        ArrayDeque <Integer> secondBoxStack  = new ArrayDeque<>();   -- създаване на стек
+        for (String input : secondLine) {                           -- обхождам вторият ред на входните данни за да вземем всяко число
+            secondBoxStack.push(Integer.parseInt(input));          -- пълнене на стек
+        }
+
+        ------------------------------------------------------------------------------------------------------------------------
+
+        package Exams._16_JavaAdvancedRegularExam23October2021;
+
+        import java.util.*;
+
+        public class _01_AutumnCocktails {
+
+            private static final int Pear_Sour = 150;
+            private static final int The_Harvest = 250;
+            private static final int Apple_Hinny = 300;
+            private static final int High_Fashion = 400;
+
+            public static void main(String[] args) {
+                Scanner scanner = new Scanner(System.in);
+
+                Map<String, Integer> cocktails = new HashMap<>();// съхраняваме нашите коктейло
+
+                // добавяме коктейли
+                cocktails.put("Pear Sour", 0);
+                cocktails.put("The Harvest", 0);
+                cocktails.put("Apple Hinny", 0);
+                cocktails.put("High Fashion", 0);
+        //----------------------------------------- прочитане входни данни
+                String[] tokens = scanner.nextLine().split("\\s+"); // прочитаме входните данни
+                ArrayDeque<Integer> ingredients = new ArrayDeque<>(); // съставките посредством използването на опашка
+                for (String token : tokens) {
+                    ingredients.offer(Integer.parseInt(token)); // добавяме към ingredients - tokens
+                }
+
+                tokens = scanner.nextLine().split("\\s+");
+                ArrayDeque<Integer> freshness = new ArrayDeque<>();// освежители посредством използването на стек
+                for (String token : tokens) {
+                    freshness.push(Integer.parseInt(token)); // добавяме към freshness - tokens
+                }
+        //------------------------------------------------
+                while (!ingredients.isEmpty() && !freshness.isEmpty()) {
+
+                    // взимаме първата съставка и последният освежител и ги умножаваме
+                    int firstIngredients = ingredients.peek();
+
+                    if (firstIngredients == 0) {
+                        ingredients.poll();
+                        continue;
+                    }
+                    int lastFreshness = freshness.peek();
+
+                    int totalLevel = firstIngredients * lastFreshness;// крайната свежест
+
+                    switch (totalLevel) { // проверяваме дали имаме някои от коктейлите
+                        case Pear_Sour:
+                            int currentPearSour = cocktails.get("Pear Sour"); // дабавяме
+                            currentPearSour++;
+                            cocktails.put("Pear Sour", currentPearSour);
+                            ingredients.poll();
+                            freshness.pop();
+                            break;
+
+                        case The_Harvest:
+                            int currentTheHarvest = cocktails.get("The Harvest"); // дабавяме
+                            currentTheHarvest++;
+                            cocktails.put("The Harvest", currentTheHarvest);
+                            ingredients.poll();
+                            freshness.pop();
+                            break;
+
+                        case Apple_Hinny:
+                            int currentAppleHinny = cocktails.get("Apple Hinny"); // дабавяме
+                            currentAppleHinny++;
+                            cocktails.put("Apple Hinny", currentAppleHinny);
+                            ingredients.poll();
+                            freshness.pop();
+                            break;
+
+                        case High_Fashion:
+                            int currentHighFashion = cocktails.get("High Fashion"); // дабавяме
+                            currentHighFashion++;
+                            cocktails.put("High Fashion", currentHighFashion);
+                            ingredients.poll();
+                            freshness.pop();
+                            break;
+
+                        default:
+                            freshness.pop();
+                            Integer ingredient = ingredients.poll();
+                            ingredient += 5;
+                            ingredients.offer(ingredient);
+                            break;
+                    }
+        //            ingredients.poll();
+        //            freshness.pop();
+                }
+                if (cocktails.get("Pear Sour") > 0 && cocktails.get("The Harvest") > 0
+                        && cocktails.get("Apple Hinny") > 0 && cocktails.get("High Fashion") > 0) { // ако имаме всички коктейли
+                    System.out.println("It's party time! The cocktails are ready!");
+
+                } else { // ако нямаме всички коктейли
+                    System.out.println("What a pity! You didn't manage to prepare all cocktails.");
+                }
+
+                if (!ingredients.isEmpty()) { // останали съставки
+                    int sum = 0;
+                    for (Integer ingredient : ingredients) {
+                        sum += ingredient;
+        //                sum ++;
+                    }
+                    System.out.printf("Ingredients left: %d%n", sum);
+                }
+
+                if (cocktails.get("Apple Hinny") > 0) {
+                    System.out.printf("# Apple Hinny --> %d%n", cocktails.get("Apple Hinny"));
+                }
+                if (cocktails.get("High Fashion") > 0) {
+                    System.out.printf("# High Fashion --> %d%n", cocktails.get("High Fashion"));
+                }
+                if (cocktails.get("Pear Sour") > 0) {
+                    System.out.printf("# Pear Sour --> %d%n", cocktails.get("Pear Sour"));
+                }
+                if (cocktails.get("The Harvest") > 0) {
+                    System.out.printf("# The Harvest --> %d%n", cocktails.get("The Harvest"));
+                }
+            }
+        }
+
+---------------------------------------------------------------------------------------------------------------------------------- 26.10.2019
+
+ArrayDeque<Integer> malesStack = new ArrayDeque<>();
+        Arrays.stream(scanner.nextLine().split("\\s+")).map(Integer::parseInt).forEach(malesStack::push);
+
+        ArrayDeque<Integer> femalesQueue = Arrays.stream(scanner.nextLine().split("\\s+"))
+                .map(Integer::parseInt).collect(Collectors.toCollection(ArrayDeque::new));
+
+
+        int matchesCount = 0;
+
+        while (!malesStack.isEmpty() && !femalesQueue.isEmpty()) {
+
+            int male = malesStack.peek();
+            int female = femalesQueue.peek();
+
+
+            if (male <= 0) {   	Ако нечия стойност е равна или по- ниска 0 , трябва да го премахнете от записите, преди да се опитате да го свържете с някого
+                malesStack.pop();
+                continue;
+
+            } else if (female <= 0) {   	Ако нечия стойност е равна или по- ниска 0 , трябва да я премахнете от записите, преди да се опитате да я свържете с някого
+                femalesQueue.poll();
+                continue;
+            }
+            if (male % 25 == 0) {    Специален случай - ако нечия стойност се дели на 25 без остатък , трябва да премахнете него и следващото лице от същия пол
+                malesStack.pop();
+                malesStack.pop();
+                continue;
+
+            } else if (female % 25 == 0) {   •	Специален случай - ако нечия стойност се дели на 25 без остатък , трябва да премахнете нея и следващото лице от същия пол
+                femalesQueue.poll();
+                femalesQueue.poll();
+                continue;
+            }
+
+            if (male == female) {     стойностите им са равни , трябва да ги съпоставите и да премахнете и двете
+                matchesCount++;
+                malesStack.pop();
+                femalesQueue.poll();
+
+            } else {                  В противен случай трябва да премахнете само женската и да намалите стойността на мъжката с 2
+                femalesQueue.poll();
+                malesStack.push(malesStack.pop() - 2);
+            }
+
+        }
+        System.out.printf("Matches: %d%n", matchesCount);
+
+        if (!malesStack.isEmpty()) {
+            System.out.println("Males left: " + malesStack.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+
+        } else {
+            System.out.println("Males left: none");
+        }
+
+        if (!femalesQueue.isEmpty()) {
+            System.out.println("Females left: " + femalesQueue.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+
+        } else {
+            System.out.println("Females left: none");
+
+        }
+
+ --------------------------------------------------------------------------------------------------------------------------------- 17.12.2019
+  String[] firstLine = scanner.nextLine().split("\\s+");
+         ArrayDeque<Integer> materialsStack = new ArrayDeque<>();
+         for (String input : firstLine) {
+             materialsStack.push(Integer.parseInt(input));
+         }
+
+         String[] secondLine = scanner.nextLine().split("\\s+");
+         ArrayDeque<Integer> magicLevelQueue = new ArrayDeque<>();
+         for (String input : secondLine) {
+             magicLevelQueue.offer(Integer.parseInt(input));
+         }
+
+         Map<String, Integer> presents = new TreeMap<>();
+
+
+         presents.put("Doll", 0);
+         presents.put("Wooden train", 0);
+         presents.put("Teddy bear", 0);
+         presents.put("Bicycle", 0);
+
+         Спрете да правите подаръци, когато ви свършат кутии с материали или стойности на магически нива
+         while (!materialsStack.isEmpty() && !magicLevelQueue.isEmpty()) {
+
+             int material = materialsStack.peek();
+             int magic = magicLevelQueue.peek();
+
+             if (material == 0 || magic == 0) {  	Ако магията или материалът (или и двете) са равни 0 , премахнете го (или и двете) и продължете да създавате подаръците
+
+                 if (materialsStack.peek() == 0) {
+                     materialsStack.pop();
+                 }
+
+                 if (magic == 0) {
+                     magicLevelQueue.poll();
+                 }
+             }
+
+             int totalMagicNeeded = material * magic;
+
+             switch (totalMagicNeeded) {
+
+                 case 150 -> {        Ако резултатът е равен на едно от нивата, описани в таблицата по-горе, изработвате настоящето и премахвате както материалите, така и магическата стойност
+                     presents.put("Doll", presents.get("Doll") + 1);
+                     materialsStack.pop();
+                     magicLevelQueue.poll();
+                 }
+                 case 250 -> {       Ако резултатът е равен на едно от нивата, описани в таблицата по-горе, изработвате настоящето и премахвате както материалите, така и магическата стойност
+                     presents.put("Wooden train", presents.get("Wooden train") + 1);
+                     materialsStack.pop();
+                     magicLevelQueue.poll();
+                 }
+                 case 300 -> {       Ако резултатът е равен на едно от нивата, описани в таблицата по-горе, изработвате настоящето и премахвате както материалите, така и магическата стойност
+                     presents.put("Teddy bear", presents.get("Teddy bear") + 1);
+                     materialsStack.pop();
+                     magicLevelQueue.poll();
+                 }
+                 case 400 -> {      Ако резултатът е равен на едно от нивата, описани в таблицата по-горе, изработвате настоящето и премахвате както материалите, така и магическата стойност
+                     presents.put("Bicycle", presents.get("Bicycle") + 1);
+                     materialsStack.pop();
+                     magicLevelQueue.poll();
+                 }
+                 default -> {
+
+                     if (totalMagicNeeded < 0) {   	Ако продуктът на операцията е отрицателен номер , тогава трябва да сумирате стойностите заедно, да ги премахнете и двете от техните позиции и резултатът трябва да бъде добавен към материалите.
+                         int totalSum = material + magic;
+                         materialsStack.pop();
+                         magicLevelQueue.poll();
+                         materialsStack.push(totalSum);
+
+                     } else if (totalMagicNeeded > 0) { 	Ако продуктът не е равен на едно от магическите нива в таблицата и е положително число, премахнете само магическата стойност и увеличете материалната стойност с 15
+                         magicLevelQueue.poll();
+                         materialsStack.push(materialsStack.pop() + 15);
+
+                     }
+                 }
+             }
+         }
+             Вашата задача се счита за изпълнена, ако успеете да изработите една от двете двойки - кукла и влак или плюшено мече и колело
+             boolean firstResult = (presents.get("Doll") > 0 && presents.get("Wooden train") > 0);
+             boolean secondResult = (presents.get("Teddy bear") > 0 && presents.get("Bicycle") > 0);
+
+             if (firstResult || secondResult) {
+                 System.out.println("The presents are crafted! Merry Christmas!");
+
+             }else {
+                 System.out.println("No presents this Christmas!");
+             }
+
+             if (!materialsStack.isEmpty()) {
+                 System.out.print("Materials left: ");
+                 System.out.println(materialsStack.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+             }
+
+             if (!magicLevelQueue.isEmpty()) {
+                 System.out.print("Magic left: ");
+                 System.out.println(magicLevelQueue.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+             }
+             presents.entrySet().stream().filter(e -> e.getValue() > 0)
+                     .forEach(e -> System.out.printf("%s: %d%n", e.getKey(), e.getValue()));
+
+------------------------------------------------------------------------------------------------------------------------- 22.02.2020
+
+  String [] firstLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Integer> firstBoxQueue = new ArrayDeque<>();
+        for (String input : firstLine) {
+            firstBoxQueue.offer(Integer.parseInt(input));
+        }
+
+        String [] secondLine = scanner.nextLine().split("\\s+");
+        ArrayDeque <Integer> secondBoxStack  = new ArrayDeque<>();
+        for (String input : secondLine) {
+            secondBoxStack.push(Integer.parseInt(input));
+        }
+
+        int sumOfClaimedItems = 0;
+
+
+        while (!firstBoxQueue.isEmpty() && (!secondBoxStack.isEmpty())) {   Трябва да спрете да сумирате елементи, когато една от кутиите стане празна
+
+            int firstNumber = firstBoxQueue.peek();
+            int secondNumber = secondBoxStack.peek();
+
+            int sumNumber = firstNumber + secondNumber;
+
+            if(sumNumber % 2 == 0) {   Ако сумата от техните стойности е четно число, добавете сумирания елемент към вашата колекция от заявени артикули и ги премахнете и двата от кутиите
+                 sumOfClaimedItems += sumNumber;
+                 firstBoxQueue.poll();
+                 secondBoxStack.pop();
+
+            } else {     В противен случай премахнете последния елемент от второто поле и го добавете на последната позиция в първото поле
+            secondBoxStack.pop();
+            firstBoxQueue.offer(secondNumber);
+
+
+           }
+        }
+
+            if(firstBoxQueue.isEmpty()) {
+                System.out.println("First lootbox is empty");
+
+            }else {
+                System.out.println("Second lootbox is empty");
+            }
+
+            if(sumOfClaimedItems >= 100) {     Ако сумата на заявените елементи е равна или по-голяма от 100
+                System.out.printf("Your loot was epic! Value: %d%n", sumOfClaimedItems);
+
+            }else {
+                System.out.printf("Your loot was poor... Value: %d%n",sumOfClaimedItems);
+            }
+
+ ----------------------------------------------------------------------------------------------------------------- 28.06.2020
+
+     private static final int Datura_Bombs = 40;
+     private static final int Cherry_Bombs = 60;
+     private static final int Smoke_Decoy_Bombs = 120;
+
+     public static void main(String[] args) {
+         Scanner scanner = new Scanner (System.in);
+
+
+         String [] firstLine = scanner.nextLine().split(", ");
+         ArrayDeque<Integer> bombEffectsQueue = new ArrayDeque<>();
+         for (String input : firstLine) {
+             bombEffectsQueue.offer(Integer.parseInt(input));
+         }
+
+         String [] secondLine = scanner.nextLine().split(", ");
+         ArrayDeque <Integer> bombCasingStack  = new ArrayDeque<>();
+         for (String input : secondLine) {
+             bombCasingStack.push(Integer.parseInt(input));
+         }
+
+
+         int countDaturaBombs = 0;
+         int countCherryBombs = 0;
+         int countSmokeDecoyBombs = 0;
+
+
+         while (!bombEffectsQueue.isEmpty() && (!bombCasingStack.isEmpty())) {
+
+             if (countDaturaBombs >= 3 && countCherryBombs >= 3 && countSmokeDecoyBombs >= 3) {
+                 break;
+             }
+
+             int firstNumber = bombEffectsQueue.peek();
+             int secondNumber = bombCasingStack.peek();
+
+             int sumNumber = firstNumber + secondNumber;
+
+             if(sumNumber == Datura_Bombs ) {  Ако сумата от техните стойности е равна на някой от материалите в таблицата по-долу – създайте бомбата съответстваща на стойността и премахнете и двата бомбени материала
+
+                 bombEffectsQueue.poll();
+                 bombCasingStack.pop();
+                 countDaturaBombs ++;
+
+
+             } else if (sumNumber == Cherry_Bombs ) {
+
+                 bombEffectsQueue.poll();
+                 bombCasingStack.pop();
+                 countCherryBombs++;
+
+
+             } else if (sumNumber == Smoke_Decoy_Bombs) {
+
+                 bombEffectsQueue.poll();
+                 bombCasingStack.pop();
+                 countSmokeDecoyBombs++;
+
+             }else {                 В противен случай просто намалете стойността на корпуса на бомбата от 5
+                 bombCasingStack.push(bombCasingStack.pop() - 5);
+
+             }
+         }
+
+            За да напълни кесия с бомба, Ецио се нуждае от три от всеки от видовете бомби
+         if (countDaturaBombs == 3 || countCherryBombs == 3 || countSmokeDecoyBombs == 3) {   Ецио е успял да изпълни бомбената торбичка
+                 System.out.println("Bene! You have successfully filled the bomb pouch!");
+
+             }else {
+                 System.out.println("You don't have enough materials to fill the bomb pouch."); Ецио не е успял да изпълни бомбената торбичка
+         }
+
+             if (!bombEffectsQueue.isEmpty()) {    има ефекти
+                 System.out.print("Bomb Effects: " + bombEffectsQueue.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+                 System.out.println();
+
+             }else {          няма бомбени ефекти
+                 System.out.println("Bomb Effects: empty");
+
+         }
+
+             if (!bombCasingStack.isEmpty()) {   има гилзи
+                 System.out.print("Bomb Casings: " + bombCasingStack.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+                 System.out.println();
+
+             }else {      няма гилзи за бомби
+                 System.out.println("Bomb Casings: empty");
+             }
+
+                създадени бомби и броя им , подредени по азбучен ред
+         System.out.printf("Cherry Bombs: %d%n", countCherryBombs);
+         System.out.printf("Datura Bombs: %d%n", countDaturaBombs);
+         System.out.printf("Smoke Decoy Bombs: %d%n", countSmokeDecoyBombs);
+
+------------------------------------------------------------------------------------------------------------------------ 19.08.2020
+
+        String [] firstLine = scanner.nextLine().split(", ");
+        ArrayDeque <Integer> liliesStack = new ArrayDeque<>();
+        for (String input : firstLine) {
+            liliesStack.push(Integer.parseInt(input));
+        }
+
+        String [] secondLine = scanner.nextLine().split(", ");
+        ArrayDeque<Integer> rosesQueue  = new ArrayDeque<>();
+        for (String input : secondLine) {
+            rosesQueue.offer(Integer.parseInt(input));
+        }
+        int sum = 0;
+        int wreath = 0;
+
+        while (!liliesStack.isEmpty() && (!rosesQueue.isEmpty())) {
+
+            int firstNumber = liliesStack.peek();
+            int secondNumber = rosesQueue.peek();
+
+            int sumTotal = firstNumber + secondNumber;
+
+             if (sumTotal == 15) {  Ако сумата на стойностите им е равна на 15 – създайте един венец и ги премахнете
+                  wreath++;
+                  liliesStack.pop();
+                  rosesQueue.poll();
+
+             } else if (sumTotal > 15) {   Ако сумата е по-голяма от 15 , просто намалете стойността на лилиите с 2
+                int lilie = liliesStack.pop();
+                 lilie-=2;
+                 liliesStack.push(lilie);
+
+             } else {  Ако сумата е по-малка от 15, трябва да ги съхраните за по-късно и да ги премахнете
+                 sum += sumTotal;
+                 liliesStack.pop();
+                 rosesQueue.poll();
+
+             }
+        }
+             int additionalWreath = sum / 15;   като знаете, че един венец се нуждае от 15 цветя
+              wreath += additionalWreath;
+
+        if (wreath >= 5) {   Вашата цел е да направите поне 5 венчета от цветя
+            System.out.printf("You made it, you are going to the competition with %d wreaths!", wreath);
+
+        }else {         В крайна сметка, ако имате запазени цветя, трябва да направите колкото можете повече венци от тях
+            System.out.printf("You didn't make it, you need %d wreaths more!", 5-wreath);
+        }
+
+---------------------------------------------------------------------------------------------------------------  16.12.2020
+
+private static final int Bread = 25;
+    private static final int Cake = 50;
+    private static final int Pastry = 75;
+    private static final int Fruit_Pie = 100;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String[] firstLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Integer> liquidsQueue = new ArrayDeque<>();
+        for (String input : firstLine) {
+            liquidsQueue.offer(Integer.parseInt(input));
+        }
+
+        String[] secondLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Integer> ingredientsStack = new ArrayDeque<>();
+        for (String input : secondLine) {
+            ingredientsStack.push(Integer.parseInt(input));
+        }
+
+        int amountBread = 0;
+        int amountCake = 0;
+        int amountPastry = 0;
+        int amountFruit_Pie = 0;
+
+
+        while (!liquidsQueue.isEmpty() && (!ingredientsStack.isEmpty())) {
+
+
+            int firstNumber = liquidsQueue.peek();
+            int secondNumber = ingredientsStack.peek();
+
+            int sumNumber = firstNumber + secondNumber;
+
+            if (sumNumber == Bread ) {   Ако сумата от техните стойности е равна на някой от елементите в таблицата по-долу – гответе храната, съответстваща на стойността и извадете както течността , така и съставката
+                liquidsQueue.poll();
+                ingredientsStack.pop();
+                amountBread++;
+
+            } else if (sumNumber == Cake) {
+                liquidsQueue.poll();
+                ingredientsStack.pop();
+                amountCake++;
+
+            }else if (sumNumber == Pastry) {
+                liquidsQueue.poll();
+                ingredientsStack.pop();
+                amountPastry++;
+
+            }else if (sumNumber == Fruit_Pie) {
+                liquidsQueue.poll();
+                ingredientsStack.pop();
+                amountFruit_Pie++;
+
+            }else {      В противен случай отстранете само течността и увеличете стойността на съставката с 3
+                liquidsQueue.poll();
+                ingredientsStack.push(ingredientsStack.pop() + 3);
+
+            }
+        }
+
+           ако сте го направили поне
+           по една от всяка от храните , след завършване на комбинирането
+        if (amountBread >= 1 && amountCake >= 1 && amountPastry >= 1 && amountFruit_Pie >= 1) {
+            System.out.println("Wohoo! You succeeded in cooking all the food!");
+
+        }else {
+            System.out.println("Ugh, what a pity! You didn't have enough materials to cook everything.");
+        }
+
+        if (!liquidsQueue.isEmpty()) {    има течности
+            System.out.print("Liquids left: " + liquidsQueue.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+            System.out.println();
+
+        }else {   няма течности
+            System.out.println("Liquids left: none");
+
+        }
+
+        if (!ingredientsStack.isEmpty()) {  има елементи
+            System.out.print("Ingredients left: " + ingredientsStack.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+            System.out.println();
+
+        }else {   няма елементи
+            System.out.println("Ingredients left: none");
+
+        }
+
+          Материали и количеството, което имате от тях , подредени по азбучен ред
+        System.out.printf("Bread: %d%n", amountBread);
+        System.out.printf("Cake: %d%n", amountCake);
+        System.out.printf("Fruit Pie: %d%n", amountFruit_Pie);
+        System.out.printf("Pastry: %d%n", amountPastry);
+
+-------------------------------------------------------------------------------------------------------------  20.02.2021
+
+String [] firstLine = scanner.nextLine().split("\\s+");
+        ArrayDeque <Integer> firstBoxQueue = new ArrayDeque<>();
+        for (String input : firstLine) {
+            firstBoxQueue.offer(Integer.parseInt(input));
+        }
+
+        String [] secondLine = scanner.nextLine().split("\\s+");
+        ArrayDeque <Integer> secondBoxStack  = new ArrayDeque<>();
+        for (String input : secondLine) {
+            secondBoxStack.push(Integer.parseInt(input));
+        }
+
+            int sum = 0;
+
+         while (!firstBoxQueue.isEmpty() && (!secondBoxStack.isEmpty())) {
+
+             int firstNumber = firstBoxQueue.peek();
+             int secondNumber = secondBoxStack.peek();
+
+             int sumNumber = firstNumber + secondNumber;
+
+              if (sumNumber % 2 == 0) {   Ако сумата от техните стойности е четно число, добавете сумирания елемент към вашата колекция от заявени артикули и ги премахнете и двата от кутиите
+                  sum+=sumNumber;
+                  firstBoxQueue.poll();
+                  secondBoxStack.pop();
+
+
+              } else {       В противен случай премахнете последния елемент от второто поле и го добавете на последната позиция в първото поле
+                  secondBoxStack.pop();
+                  firstBoxQueue.offer(secondNumber);
+
+
+              }
+
+         }
+
+
+        if (firstBoxQueue.isEmpty()) {   първата магическа кутия стане празна
+            System.out.println("First magic box is empty.");
+
+        } else {   втората магическа кутия стане празна
+            System.out.println("Second magic box is empty.");
+        }
+
+        if (sum >= 90) {      Ако сборът на заявените елементи е равен или по-голям от 90
+            System.out.printf("Wow, your prey was epic! Value: %d", sum);
+
+        }else {
+            System.out.printf("Poor prey... Value: %d", sum);
+        }
+
+ --------------------------------------------------------------------------------------------------- 14.04.2021
+
+String[] firstLine = scanner.nextLine().split(", ");
+        ArrayDeque<Integer> tulipsStack = new ArrayDeque<>();
+        for (String input : firstLine) {
+            tulipsStack.push(Integer.parseInt(input));
+        }
+
+        String[] secondLine = scanner.nextLine().split(", ");
+        ArrayDeque<Integer> daffodilsQueue = new ArrayDeque<>();
+        for (String input : secondLine) {
+            daffodilsQueue.offer(Integer.parseInt(input));
+        }
+
+        int sum = 0;
+        int bouquets = 0;
+
+        while (!tulipsStack.isEmpty() && (!daffodilsQueue.isEmpty())) {
+
+            int firstNumber = tulipsStack.peek();
+            int secondNumber = daffodilsQueue.peek();
+
+            int sumTotal = firstNumber + secondNumber;
+
+            if (sumTotal == 15) {    Ако сумата от стойностите им е равна на 15 – създайте един букет и ги премахнете
+                bouquets++;
+                tulipsStack.pop();
+                daffodilsQueue.poll();
+
+            } else if (sumTotal > 15) {   Докато сумата е по-голяма от 15 , продължавайте да намалявате стойността на лалетата с 2
+                int tulip = tulipsStack.pop();
+                tulip -= 2;
+                tulipsStack.push(tulip);
+
+            } else {              Ако сумата е по-малка от 15, трябва да ги съхраните за по-късно и да ги премахнете
+                sum += sumTotal;
+                tulipsStack.pop();
+                daffodilsQueue.poll();
+            }
+        }
+
+        int additionalBouquet = sum / 15;   като знаете, че за един букет са необходими 15 цветя
+        bouquets += additionalBouquet;
+
+        if (bouquets >= 5) {  Вашата цел е да направите поне 5 букета
+            System.out.printf("You made it! You go to the competition with %d bouquets!", bouquets);
+
+        }else {    ако имате запазени цветя, трябва да направите колкото можете повече букети с тях
+            System.out.printf("You failed... You need more %d bouquets.", 5-bouquets);
+        }
+
+ ----------------------------------------------------------------------------------------------------------- 26.06.2021
+
+String[] firstLine = scanner.nextLine().split(", ");
+        ArrayDeque<Integer> tasksStack = new ArrayDeque<>();
+        for (String input : firstLine) {
+            tasksStack.push(Integer.parseInt(input));
+        }
+
+        String[] secondLine = scanner.nextLine().split(" ");
+        ArrayDeque<Integer> threadsQueue = new ArrayDeque<>();
+        for (String input : secondLine) {
+            threadsQueue.offer(Integer.parseInt(input));
+        }
+
+        int valueTaskKilled = Integer.parseInt(scanner.nextLine());    целочислената стойност на задача , която трябва да убиете
+
+        boolean isFound = false;
+
+        while (!tasksStack.isEmpty() && (!threadsQueue.isEmpty())) {
+
+            int firstNumber = tasksStack.peek();
+            int secondNumber = threadsQueue.peek();
+
+            if (firstNumber == valueTaskKilled) {  Вашата задача е да спрете работата на операционната система веднага щом стигнете до тази задача
+                isFound = true;
+                break;
+            }
+
+            if (secondNumber >= firstNumber) {   Ако стойността на нишката е по-голяма или равна на стойността на задачата , задачата и нишката се премахват
+                tasksStack.pop();
+                threadsQueue.poll();
+
+            } else {       Ако нишката е по - малка от стойността на задачата , нишката се премахва , но задачата остава
+                threadsQueue.poll();
+
+            }
+        }
+
+        if (isFound){     След като завършите необходимата задача
+            System.out.printf("Thread with value %d killed task %d%n", threadsQueue.peek(), valueTaskKilled);
+        }
+           отпечатайте останалите нишки ( включително тази , която е убила задачата ) , като започнете от първата на един ред, разделени с един интервал
+        System.out.println(threadsQueue.stream().map(String::valueOf).collect(Collectors.joining(" ")));
+    }
+
+---------------------------------------------------------------------------------------------------  18.08.2021
+
+    private static final int Biscuit = 25;
+    private static final int Cake = 50;
+    private static final int Pastry = 75;
+    private static final int Pie = 100;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner (System.in);
+
+
+        String [] firstLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Integer> liquidsQueue = new ArrayDeque<>();
+        for (String input : firstLine) {
+            liquidsQueue.offer(Integer.parseInt(input));
+        }
+
+        String [] secondLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Integer> ingredientsStack  = new ArrayDeque<>();
+        for (String input : secondLine) {
+            ingredientsStack.push(Integer.parseInt(input));
+        }
+
+        int countBiscuit = 0;
+        int countCake = 0;
+        int countPastry = 0;
+        int countPie = 0;
+
+
+        while (!liquidsQueue.isEmpty() && !ingredientsStack.isEmpty()) {
+
+            int firstNumber = liquidsQueue.peek();
+            int secondNumber = ingredientsStack.peek();
+
+            int sumNumber = firstNumber + secondNumber;
+
+             Ако сумата от техните стойности е равна на някой от елементите в таблицата по-долу – гответе храната, съответстваща на стойността и извадете както течността , така и съставката
+            if(sumNumber == Biscuit ) {
+
+                liquidsQueue.poll();
+                ingredientsStack.pop();
+                countBiscuit++;
+
+            }else if (sumNumber == Cake) {
+
+                liquidsQueue.poll();
+                ingredientsStack.pop();
+                countCake++;
+
+            }else if (sumNumber == Pastry) {
+
+                liquidsQueue.poll();
+                ingredientsStack.pop();
+                countPastry++;
+
+            }else if (sumNumber == Pie) {
+
+                liquidsQueue.poll();
+                ingredientsStack.pop();
+                countPie++;
+
+            }    В противен случай отстранете само течността и увеличете стойността на съставката с 3
+            if (sumNumber != Biscuit && sumNumber != Cake && sumNumber != Pastry && sumNumber != Pie) {
+                liquidsQueue.poll();
+                ingredientsStack.push(ingredientsStack.pop() + 3);
+
+            }
+        }
+
+                  ако имате поне по една от всяка от храните , след завършване на комбинирането
+            if (countBiscuit >= 1 && countCake >= 1 && countPastry >= 1 && countPie >= 1) {
+                System.out.println("Great! You succeeded in cooking all the food!");
+
+            }else {
+                System.out.println("What a pity! You didn't have enough materials to cook everything.");
+            }
+
+            if (!liquidsQueue.isEmpty()) {  има течности
+                System.out.print("Liquids left: " + liquidsQueue.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+                System.out.println();
+
+            }else {     няма течности
+                System.out.println("Liquids left: none");
+
+            }
+
+            if (!ingredientsStack.isEmpty()) {  има елементи
+                System.out.print("Ingredients left: " + ingredientsStack.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+                System.out.println();
+
+            }else {   няма елементи
+                System.out.println("Ingredients left: none");
+            }
+
+                След това трябва да отпечатате всички разширени Материали и количеството, което имате от тях , поръчани
+            System.out.printf("Biscuit: %d%n", countBiscuit);
+            System.out.printf("Cake: %d%n", countCake);
+            System.out.printf("Pie: %d%n", countPie);
+            System.out.printf("Pastry: %d%n", countPastry);
+
+ -------------------------------------------------------------------------------------------------------------  23.10.2021
+
+private static final int Pear_Sour = 150;
+    private static final int The_Harvest = 250;
+    private static final int Apple_Hinny = 300;
+    private static final int High_Fashion = 400;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Map<String, Integer> cocktails = new HashMap<>();
+
+
+        cocktails.put("Pear Sour", 0);
+        cocktails.put("The Harvest", 0);
+        cocktails.put("Apple Hinny", 0);
+        cocktails.put("High Fashion", 0);
+
+        String[] tokens = scanner.nextLine().split("\\s+");
+
+        ArrayDeque<Integer> ingredientsQueue = new ArrayDeque<>();
+        for (String token : tokens) {
+            ingredientsQueue.offer(Integer.parseInt(token));
+        }
+
+        tokens = scanner.nextLine().split("\\s+");
+
+        ArrayDeque<Integer> freshnessStack = new ArrayDeque<>();
+        for (String token : tokens) {
+            freshnessStack.push(Integer.parseInt(token));
+        }
+
+        while (!ingredientsQueue.isEmpty() && !freshnessStack.isEmpty()) {
+
+
+            int firstIngredients = ingredientsQueue.peek();
+
+            if (firstIngredients == 0) {   В случай, че имате съставка със стойност 0, трябва да я премахнете и да продължите да смесвате коктейлите
+                ingredientsQueue.poll();
+                continue;
+            }
+            int lastFreshness = freshnessStack.peek();
+
+            int totalLevels = firstIngredients * lastFreshness;  Общото ниво на свежест се изчислява чрез тяхното умножение
+
+            switch (totalLevels) {  Ако продуктът от тази операция е равен на едно от нивата, описани в таблицата, правите коктейла и премахвате двете кофи със съставки и стойност на свежест
+
+                case Pear_Sour -> {
+                    int currentPearSour = cocktails.get("Pear Sour");
+                    currentPearSour++;
+                    cocktails.put("Pear Sour", currentPearSour);
+                    ingredientsQueue.poll();
+                    freshnessStack.pop();
+                }
+                case The_Harvest -> {
+                    int currentTheHarvest = cocktails.get("The Harvest");
+                    currentTheHarvest++;
+                    cocktails.put("The Harvest", currentTheHarvest);
+                    ingredientsQueue.poll();
+                    freshnessStack.pop();
+                }
+                case Apple_Hinny -> {
+                    int currentAppleHinny = cocktails.get("Apple Hinny");
+                    currentAppleHinny++;
+                    cocktails.put("Apple Hinny", currentAppleHinny);
+                    ingredientsQueue.poll();
+                    freshnessStack.pop();
+                }
+                case High_Fashion -> {
+                    int currentHighFashion = cocktails.get("High Fashion");
+                    currentHighFashion++;
+                    cocktails.put("High Fashion", currentHighFashion);
+                    ingredientsQueue.poll();
+                    freshnessStack.pop();
+                }
+                default -> {
+                    freshnessStack.pop();
+                    Integer ingredient = ingredientsQueue.poll();
+                    ingredient += 5;   В противен случай трябва да премахнете нивото на свежест , да увеличите стойността на съставката с 5
+                    ingredientsQueue.offer(ingredient);  след това да я премахнете от първата позиция и да я добавите в края
+                }
+            }
+        }
+
+                      дали сте успели да приготвите коктейлите  (ако направите поне четири коктейла - по един от всеки вид )
+        if (cocktails.get("Pear Sour") > 0 && cocktails.get("The Harvest") > 0
+                && cocktails.get("Apple Hinny") > 0 && cocktails.get("High Fashion") > 0) {
+            System.out.println("It's party time! The cocktails are ready!");
+
+        } else {
+            System.out.println("What a pity! You didn't manage to prepare all cocktails.");
+        }
+
+        if (!ingredientsQueue.isEmpty()) {     отпечатайте сбора на съставките само ако са останали всякакви
+            int sum = 0;
+            for (Integer ingredient : ingredientsQueue) {
+                sum += ingredient;
+
+            }
+            System.out.printf("Ingredients left: %d%n", sum);
+        }
+
+              отпечатате коктейлите, които сте правили поне веднъж, подредени по азбучен ред
+        if (cocktails.get("Apple Hinny") > 0) {
+            System.out.printf("# Apple Hinny --> %d%n", cocktails.get("Apple Hinny"));
+        }
+        if (cocktails.get("High Fashion") > 0) {
+            System.out.printf("# High Fashion --> %d%n", cocktails.get("High Fashion"));
+        }
+        if (cocktails.get("Pear Sour") > 0) {
+            System.out.printf("# Pear Sour --> %d%n", cocktails.get("Pear Sour"));
+        }
+        if (cocktails.get("The Harvest") > 0) {
+            System.out.printf("# The Harvest --> %d%n", cocktails.get("The Harvest"));
+        }
+
+----------------------------------------------------------------------------------------------------------- 15.12.2021
+
+ String[] firstLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Integer> malesStack = new ArrayDeque<>();
+        for (String input : firstLine) {
+            malesStack.push(Integer.parseInt(input));
+        }
+        String[] secondLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Integer> femalesQueue = new ArrayDeque<>();
+        for (String input : secondLine) {
+            femalesQueue.offer(Integer.parseInt(input));
+        }
+
+        int matchesCount = 0;
+
+
+        while (!malesStack.isEmpty() && !femalesQueue.isEmpty()) {
+
+            int firstNumber = malesStack.peek();
+            int secondNumber = femalesQueue.peek();
+
+            if (firstNumber <= 0 ) {  	Ако нечия стойност е равна или по- ниска 0 , трябва да го премахнете от записите, преди да се опитате да го свържете с някого
+                malesStack.pop();
+
+            } else if (secondNumber <= 0) {   Ако нечия стойност е равна или по- ниска 0 , трябва да я премахнете от записите, преди да се опитате да я свържете с някого
+                femalesQueue.poll();
+
+            }  else if (firstNumber % 25 == 0) {  	Специален случай - ако нечия стойност се дели на 25 без остатък , трябва да премахнете него и следващото лице от същия пол
+                malesStack.pop();
+
+
+            } else if (secondNumber % 25 == 0) {   	Специален случай - ако нечия стойност се дели на 25 без остатък , трябва да премахнете него нея и следващото лице от същия пол
+                femalesQueue.poll();
+
+            } else if (firstNumber == secondNumber) {  стойностите им са равни , трябва да ги съпоставите и да премахнете и двете
+                malesStack.pop();
+                femalesQueue.poll();
+                matchesCount++;
+
+            } else {            В противен случай трябва да премахнете само женската и да намалите стойността на мъжката с 2
+                femalesQueue.poll();
+                malesStack.push(malesStack.pop() - 2);
+            }
+        }
+
+        System.out.printf("Matches: %d%n", matchesCount);   отпечатайте броя на успешните мачове
+
+        if (!malesStack.isEmpty()) {   има мъже
+            System.out.print("Males left: " + malesStack.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+            System.out.println();
+
+        }else {   няма мъже
+            System.out.println("Males left: none");
+        }
+
+        if (!femalesQueue.isEmpty()) {     има жени
+            System.out.print("Females left: " + femalesQueue.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+            System.out.println();
+
+        }else {    няма жени
+            System.out.println("Females left: none");
+
+        }
+
+ ----------------------------------------------------------------------------------------------------------  19.02.2022
+
+  ArrayDeque<Character> vowelsQueue = new ArrayDeque<>();
+         Arrays.stream(scanner.nextLine().split("\\s+")).forEach(e -> vowelsQueue.offer(e.charAt(0)));
+
+         ArrayDeque<Character> consonantsStack = new ArrayDeque<>();
+         Arrays.stream(scanner.nextLine().split("\\s+")).forEach(e -> consonantsStack.push(e.charAt(0)));
+
+         String[] words = new String[]{"pear", "flour", "pork", "olive"};
+         String[] foundWords = new String[]{"    ", "     ", "    ", "     "};
+
+         while (!vowelsQueue.isEmpty() && !consonantsStack.isEmpty()) {
+
+               char vowel = vowelsQueue.poll();
+               char consonant = consonantsStack.pop();
+
+             for (int index = 0; index < words.length; index++) {  След това преминете към следващите няколко букви, докато не останат повече съгласни букви
+                 String word = words[index];
+
+                 int vowelIndex = word.indexOf(vowel);
+                 int consonantIndex = word.indexOf(consonant);
+
+
+                 if (vowelIndex >= 0) {      Гласна буква винаги се връща в колекцията, независимо дали е използвана или не
+                     foundWords[index] = foundWords[index].substring(0, vowelIndex) + vowel + foundWords[index].substring(vowelIndex + 1);
+                 }
+
+                 if (consonantIndex >= 0) {   	А съгласна буква винаги се премахва от колекцията, независимо дали се използва или не
+                     foundWords[index] = foundWords[index].substring(0, consonantIndex) + consonant + foundWords[index].substring(consonantIndex + 1);
+                 }
+             }
+             vowelsQueue.offer(vowel);
+         }
+
+         List<String> outputWords = Arrays.stream(foundWords).filter(e -> !e.contains(" ")).toList();
+
+           отпечатайте на първия ред колко думи са намерени и на следващите N реда всяка дума
+         System.out.printf("Words found: %d%n", outputWords.size());
+         outputWords.forEach(System.out::println);
+
+ -------------------------------------------------------------------------------------------------------------------------  13.04.2022
+
+    private static final int Gladius = 70;
+    private static final int Shamshir = 80;
+    private static final int Katana = 90;
+    private static final int Sabre = 110;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner (System.in);
+
+        String[] firstLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Integer> steelQueue = new ArrayDeque<>();
+        for (String input : firstLine) {
+            steelQueue.offer(Integer.parseInt(input));
+        }
+
+        String[] secondLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Integer> carbonStack = new ArrayDeque<>();
+        for (String input : secondLine) {
+            carbonStack.push(Integer.parseInt(input));
+        }
+
+         int totalNumberOfSwords;
+         int countGladius = 0;
+         int countShamshir = 0;
+         int countKatana = 0;
+         int countSabre = 0;
+
+
+        while (!steelQueue.isEmpty() && !carbonStack.isEmpty()) {
+
+            int firstNumber = steelQueue.peek();
+            int secondNumber = carbonStack.peek();
+
+            int sumNumber = firstNumber + secondNumber;
+
+            if(sumNumber == Gladius ) {     Ако сумата от техните стойности е равна да го премахнете както стоманата , така и въглеродът
+
+                steelQueue.poll();
+                carbonStack.pop();
+                countGladius++;
+
+            } else if (sumNumber == Shamshir ) {
+
+                steelQueue.poll();
+                carbonStack.pop();
+                countShamshir++;
+
+            }else if (sumNumber == Katana ) {
+
+                steelQueue.poll();
+                carbonStack.pop();
+                countKatana++;
+
+            }else if (sumNumber == Sabre ) {
+
+                steelQueue.poll();
+                carbonStack.pop();
+                countSabre++;
+
+            }else {   В противен случай премахнете само стоманата , увеличете стойността на въглерода с 5 и го вмъкнете обратно в колекцията
+                steelQueue.poll();
+                carbonStack.push(carbonStack.pop() + 5);
+
+
+            }
+        }
+             totalNumberOfSwords = countGladius + countShamshir + countKatana + countSabre;
+
+
+           if (countGladius >= 1 || countShamshir >= 1 || countKatana >= 1 || countSabre >= 1) {    Ако поне един меч е изкован
+               System.out.printf("You have forged %d swords.%n", totalNumberOfSwords);
+
+           }else {     не е бил изкован меч
+               System.out.println("You did not have enough resources to forge a sword.");
+        }
+
+
+           if (!steelQueue.isEmpty()) {   има стомана
+            System.out.println("Steel left: " + steelQueue.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+
+           }else {      няма стомана
+            System.out.println("Steel left: none");
+
+        }
+
+
+           if (!carbonStack.isEmpty()) {  има въглерод
+            System.out.println("Carbon left: " + carbonStack.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+
+           }else {     няма въглерод
+            System.out.println("Carbon left: none");
+        }
+
+
+                само мечовете, които сте успели да изковате и колко от тях са поръчани по азбучен ред
+           if (countGladius != 0) {
+               System.out.printf("Gladius: %d%n", countGladius);
+
+        }
+           if (countKatana != 0) {
+            System.out.printf("Katana: %d%n", countKatana);
+
+        }
+            if (countSabre != 0) {
+            System.out.printf("Sabre: %d%n", countSabre);
+
+        }
+
+            if (countShamshir != 0) {
+            System.out.printf("Shamshir: %d%n", countShamshir);
+
+        }
+
+------------------------------------------------------------------------------------------------   25.06.2022
+
+    private static final int Milk_Chocolate = 30;
+    private static final int Dark_Chocolate = 50;
+    private static final int Baking_Chocolate = 100;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner (System.in);
+
+        String[] firstLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Double> milkValuesQueue = new ArrayDeque<>();
+        for (String input : firstLine) {
+            milkValuesQueue.offer(Double.parseDouble(input));
+        }
+
+        String[] secondLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Double> cacaoValuesStack = new ArrayDeque<>();
+        for (String input : secondLine) {
+            cacaoValuesStack.push(Double.parseDouble(input));
+        }
+
+        int amountMilkChocolate = 0;
+        int amountDarkChocolate = 0;
+        int amountBakingChocolate = 0;
+
+        while (!milkValuesQueue.isEmpty() && !cacaoValuesStack.isEmpty()) {
+
+            double firstNumber = milkValuesQueue.peek();
+            double secondNumber = cacaoValuesStack.peek();
+
+            double sumNumber = firstNumber + secondNumber;
+
+            double cacaoPercentage = secondNumber / sumNumber * 100;  Процентът на какаото се изчислява, като стойността на какаото на прах се раздели на сумата от стойностите на млякото и какаото на прах
+
+
+            Ако резултатът от тази операция е равен на едно от точковите нива, описани в таблицата, вие правите шоколада и премахвате както стойностите на млякото, така и на какаото на прах
+            if (cacaoPercentage == Milk_Chocolate) {
+                milkValuesQueue.poll();
+                cacaoValuesStack.pop();
+                amountMilkChocolate++;
+
+            } else if (cacaoPercentage == Dark_Chocolate) {
+                milkValuesQueue.poll();
+                cacaoValuesStack.pop();
+                amountDarkChocolate++;
+
+            } else if (cacaoPercentage == Baking_Chocolate) {
+                milkValuesQueue.poll();
+                cacaoValuesStack.pop();
+                amountBakingChocolate++;
+
+            }else {   В противен случай трябва да премахнете стойността на какаото на прах , да увеличите стойността на млякото с 10, след това да я премахнете от първата позиция и да я добавите в края
+                cacaoValuesStack.pop();
+                milkValuesQueue.poll();
+                milkValuesQueue.offer(firstNumber + 10);
+            }
+        }
+                  Вашата задача се счита за изпълнена, ако направите поне три шоколада - по един от всеки вид
+           if (amountMilkChocolate >= 1 && amountDarkChocolate >= 1 && amountBakingChocolate >= 1) {   дали сте успели да приготвите шоколадовите бонбони
+               System.out.println("It’s a Chocolate Time. All chocolate types are prepared.");
+
+           }else {
+               System.out.println("Sorry, but you didn't succeed to prepare all types of chocolates.");
+           }
+
+
+              няколко реда трябва да отпечатате шоколадите, които сте правили поне веднъж, подредени по азбучен ред
+        if (amountBakingChocolate != 0) {
+            System.out.printf("# Baking Chocolate --> %d%n", amountBakingChocolate);
+
+        }
+        if (amountDarkChocolate != 0) {
+            System.out.printf("# Dark Chocolate --> %d%n", amountDarkChocolate);
+
+        }
+        if (amountMilkChocolate != 0) {
+            System.out.printf("# Milk Chocolate --> %d%n", amountMilkChocolate);
+
+        }
+
+ --------------------------------------------------------------------------------------------------------------------  18.08.2022
+
+         String[] firstLine = scanner.nextLine().split(", ");
+         ArrayDeque<Integer> licensePlatesQueue = new ArrayDeque<>();
+         for (String input : firstLine) {
+             licensePlatesQueue.offer(Integer.parseInt(input));
+         }
+
+         String[] secondLine = scanner.nextLine().split(", ");
+         ArrayDeque<Integer> carsStack = new ArrayDeque<>();
+         for (String input : secondLine) {
+             carsStack.push(Integer.parseInt(input));
+         }
+
+         int countDays = 0;
+         int countRegisteredCars = 0;
+
+
+         while (!licensePlatesQueue.isEmpty() && !carsStack.isEmpty()) {
+
+
+             int currentPlates = licensePlatesQueue.poll();
+             int currentCars = carsStack.pop();
+
+             int licensePlates = currentCars * 2;  Две регистрационни табели са необходими за всеки автомобил
+             int registeredCars = currentPlates / 2;
+
+             if (currentPlates > licensePlates) {  Ако след края на деня останат регистрационни табели , те се добавят в края на последователността за нов ден
+
+                 currentPlates = currentPlates - licensePlates;
+                 countRegisteredCars = countRegisteredCars + currentCars;
+                 licensePlatesQueue.offer(currentPlates);
+
+             } else if (currentPlates < licensePlates) {   Ако след края на първия ден има автомобили без номера , те се добавят в началото на последователността за нов ден
+
+                 currentCars = currentCars - registeredCars;
+                 countRegisteredCars = countRegisteredCars + registeredCars;
+                 carsStack.offer(currentCars);
+
+             } else {
+                 countRegisteredCars = countRegisteredCars + currentCars;
+             }
+             countDays++;
+         }
+             броя на регистрираните автомобили и колко дни са били необходими
+         System.out.printf("%d cars were registered for %d days!%n", countRegisteredCars, countDays);
+
+         if (!licensePlatesQueue.isEmpty()) {    Ако има останали регистрационни номера
+             System.out.println(licensePlatesQueue.stream().mapToInt(value -> value).sum() + " license plates remain!");
+
+         }else if (!carsStack.isEmpty()) {    Ако има останали коли без табели
+
+             int countCarsLicensePlates = 0;
+
+             for (int car : carsStack) {
+                 countCarsLicensePlates = countCarsLicensePlates + car;
+             }
+             System.out.printf("%d cars remain without license plates!", countCarsLicensePlates);
+         }
+                Ако са използвани всички автомобили и регистрационни номера
+         if (licensePlatesQueue.isEmpty() && carsStack.isEmpty()) {
+             System.out.println("Good job! There is no queue in front of the KAT!");
+         }
+
+ --------------------------------------------------------------------------------------------------------------------------  18.02.2023
+
+     private static final int Patch = 30;
+     private static final int Bandage = 40;
+     private static final int MedKit = 100;
+
+     public static void main(String[] args) {
+         Scanner scanner = new Scanner(System.in);
+
+
+         String[] firstLine = scanner.nextLine().split("\\s+");
+         ArrayDeque<Integer> textilesQueue = new ArrayDeque<>();
+         for (String input : firstLine) {
+             textilesQueue.offer(Integer.parseInt(input));
+         }
+
+         String[] secondLine = scanner.nextLine().split("\\s+");
+         ArrayDeque<Integer> medicamentStack = new ArrayDeque<>();
+         for (String input : secondLine) {
+             medicamentStack.push(Integer.parseInt(input));
+         }
+
+         int amountPatch = 0;
+         int amountBandage = 0;
+         int amountMedKit = 0;
+
+
+         while (!medicamentStack.isEmpty() && (!textilesQueue.isEmpty())) {
+
+             int firstNumber = textilesQueue.peek();
+             int secondNumber = medicamentStack.peek();
+
+             int sumNumber = firstNumber + secondNumber;
+
+
+             switch (sumNumber) {    ако тяхната сума е равна на някой от елементите в таблицата по-долу, създайте този елемент и премахнете и двете стойности
+
+                 case Patch -> {
+
+                     textilesQueue.poll();
+                     medicamentStack.pop();
+                     amountPatch++;
+                 }
+
+                 case Bandage -> {
+
+                     textilesQueue.poll();
+                     medicamentStack.pop();
+                     amountBandage++;
+                 }
+
+                 case MedKit -> {
+
+                     textilesQueue.poll();
+                     medicamentStack.pop();
+                     amountMedKit++;
+                 }
+
+
+                  В противен случай проверете дали сумата е по-голяма от стойността на MedKit ,
+                  създайте MedKit, премахнете и двете стойности и добавете останалите ресурси ( от сумата ) към следващата стойност в колекцията от лекарства
+                  (Вземете елемента от колекцията, добавете останалата сума към нея и поставете елемента обратно на мястото му)
+
+                 default -> {
+
+                     if (sumNumber > MedKit) {
+                         amountMedKit++;
+                         textilesQueue.poll();
+                         medicamentStack.pop();
+
+                         int result = sumNumber - MedKit;
+                         medicamentStack.push(medicamentStack.pop() + result);
+
+                   Ако не можете да създадете нищо, премахнете текстилната стойност , добавете 10 към стойността на лекарството и върнете лекарството обратно на мястото му, в колекцията му
+                     } else {
+                         textilesQueue.poll();
+                         medicamentStack.push(medicamentStack.pop() + 10);
+
+                     }
+                 }
+             }
+         }
+
+         if (medicamentStack.isEmpty() && textilesQueue.isEmpty()) {     Ако и двете са празни
+             System.out.println("Textiles and medicaments are both empty.");
+
+         } else if (medicamentStack.isEmpty()) {   лекарствата са празни
+             System.out.println("Medicaments are empty.");
+
+         } else {   текстилът е празен
+             System.out.println("Textiles are empty.");
+         }
+
+          На следващите n реда отпечатайте само създадените артикули (ако има такива), подредени по низходящо създадено количество , след това по име по азбучен ред
+         TreeMap<String, Integer> medicament = new TreeMap<>();
+
+         if(amountPatch > 0) {
+             medicament.put("Patch" , amountPatch);
+         }
+
+         if(amountBandage > 0) {
+             medicament.put("Bandage" , amountBandage);
+         }
+
+         if(amountMedKit > 0) {
+             medicament.put("MedKit" , amountMedKit);
+         }
+         medicament.entrySet().stream().sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue())).forEach(entry -> {
+             System.out.printf("%s - %d%n", entry.getKey(), entry.getValue());});
+
+
+
+         if (!medicamentStack.isEmpty()) {    Ако има останали лекарства
+                 System.out.printf("Medicaments left: %s%n", medicamentStack.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+
+         }
+
+
+         if (!textilesQueue.isEmpty()) {   Ако има останал текстил
+                 System.out.printf("Textiles left: %s%n", textilesQueue.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+         }
+
+ ---------------------------------------------------------------------------------------------------------------------------  17.06.2023
+
+         String[] firstLine = scanner.nextLine().split("\\s+");     инструментите
+         ArrayDeque<Integer> toolsQueue = new ArrayDeque<>();
+         for (String input : firstLine) {
+             toolsQueue.offer(Integer.parseInt(input));
+         }
+
+         String[] secondLine = scanner.nextLine().split("\\s+");    веществата
+         ArrayDeque<Integer> substancesStack = new ArrayDeque<>();
+         for (String input : secondLine) {
+             substancesStack.push(Integer.parseInt(input));
+         }
+
+         String[] thirdLine = scanner.nextLine().split("\\s+");   предизвикателствата
+         ArrayDeque<Integer> challenges = new ArrayDeque<>();
+         for (String input : thirdLine) {
+             challenges.offer(Integer.parseInt(input));
+         }
+
+
+         while (!toolsQueue.isEmpty() && (!substancesStack.isEmpty())) {
+
+             int firstNumber = toolsQueue.peek();
+             int secondNumber = substancesStack.peek();
+
+             int sumTotal = firstNumber * secondNumber;
+
+             Ако изчисленият резултат е равен на някой от елементите от последователността на предизвикателствата , предизвикателството е разрешено.
+             Трябва да премахнете както инструмента, така и веществото от техните последователности.
+             Предизвикателството също трябва да бъде премахнато от неговата последователност
+
+             if (challenges.contains(sumTotal)) {
+                 challenges.remove(sumTotal);
+                 toolsQueue.poll();
+                 substancesStack.pop();
+
+
+              Ако Хари успее да премине всички предизвикателства , той ще намери артефакта. Прекратете програмата и отпечатайте на конзолата
+                 if (challenges.isEmpty()) {
+                     System.out.println("Harry found an ostracon, which is dated to the 6th century BCE.");
+                     break;
+                 }
+
+
+             } else {
+                 toolsQueue.offer(toolsQueue.poll() + 1);    Увеличете стойността на елемента на инструмента с 1 и преместете елемента в задната част на последователността на инструментите
+                 substancesStack.push(substancesStack.pop() - 1);  Намалете стойността на елемента вещество с 1 и връщане на елемента в последователността на веществото
+
+                 if (substancesStack.peek() == 0) {   Ако стойността на елемента вещество достигне 0, премахнете го от последователността
+                     substancesStack.pop();
+                 }
+
+                 Ако на Хари не са останали никакви вещества или инструменти
+                 има още предизвикателства за разрешаване , той се губи в храма завинаги. Прекратете програмата и отпечатайте на конзолата следното съобщение
+                 if (substancesStack.isEmpty()) {
+                     System.out.println("Harry is lost in the temple. Oblivion awaits him.");
+                     break;
+                 }
+             }
+         }
+
+         if (!toolsQueue.isEmpty()) {    останали инструменти
+             System.out.print("Tools: " + toolsQueue.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+             System.out.println();
+         }
+         if (!substancesStack.isEmpty()) {  останали вещества
+             System.out.print("Substances: " + substancesStack.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+             System.out.println();
+         }
+         if (!challenges.isEmpty()) {    останали предизвикателства
+             System.out.print("Challenges: " + challenges.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+             System.out.println();
+         }
+
+  ----------------------------------------------------------------------------------------------------------------------  13.12.2023
+                      В А Р И А Н Т -- 1
+
+   ArrayDeque<Integer> wormSizeStack = new ArrayDeque<>();
+          Arrays.stream(scanner.nextLine().split("\\s+")).map(Integer::parseInt).forEach(wormSizeStack::push);
+
+          ArrayDeque<Integer> holeSizeQueue = new ArrayDeque<>();
+          Arrays.stream(scanner.nextLine().split("\\s+")).map(Integer::parseInt).forEach(holeSizeQueue::offer);
+
+          // Стек -> добавяме - .push()  | премахваме/вземаме последният .pop()
+          // Опашка -> добавяме - .offer()  | премахваме/вземаме първият .poll()
+
+          int initialWormCount = wormSizeStack.size();
+          int matches = 0;
+
+          while (!wormSizeStack.isEmpty() && !holeSizeQueue.isEmpty()) {
+
+              int worm = wormSizeStack.pop();
+              int hole = holeSizeQueue.poll();
+
+              //  Ако стойностите им са равни , червеят пасва на дупката и може да влезе в нея. След това трябва да премахнете и двамата от техните последователности
+              if (worm == hole) {
+                  matches++;
+
+              } else {      В противен случай трябва да премахнете дупката и да намалите стойността на червея с 3
+                  worm -= 3;
+
+                  if (worm > 0) {    Ако стойността на червея стане равна или по- ниска 0 , премахнете го от последователността, преди да опитате да го съпоставите с дупката
+                      wormSizeStack.push(worm);
+                  }
+              }
+          }
+
+          if (matches > 0) {                              Ако има съвпадения, отпечатайте
+              System.out.println("Matches: " + matches);
+
+          } else {                                        Ако няма съвпадения, отпечатайте
+              System.out.println("There are no matches.");
+          }
+
+          if (wormSizeStack.isEmpty() && initialWormCount == matches) {       Ако не са останали червеи и всички пасват дупка
+              System.out.println("Every worm found a suitable hole!");
+
+          } else if (wormSizeStack.isEmpty() && initialWormCount > matches) {    Ако не са останали червеи, но само някои от тях пасват на дупка
+              System.out.println("Worms left: none");
+
+          } else if (!wormSizeStack.isEmpty()) {          Ако са останали червеи
+
+              List<Integer> reversedStack = new ArrayList<>(wormSizeStack);
+              Collections.reverse(reversedStack);
+
+              String output = reversedStack.stream().map(String::valueOf).collect(Collectors.joining(", "));
+              System.out.println("Worms left: " + output);
+          }
+
+          if (holeSizeQueue.isEmpty()) {          	Ако няма останали дупки
+              System.out.println("Holes left: none");
+
+          } else {                                  Ако има останали дупки
+              String output = holeSizeQueue.stream().map(String::valueOf).collect(Collectors.joining(", "));
+              System.out.println("Holes left: " + output);
+          }
+          ----------------------------------------------------------------------------------------------
+                          В А Р И А Н Т -- 2
+
+        String[] firstLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Integer> wormSizeStack = new ArrayDeque<>();
+        for (String input : firstLine) {
+            wormSizeStack.push(Integer.parseInt(input));
+        }
+
+        String[] secondLine = scanner.nextLine().split("\\s+");
+        ArrayDeque<Integer> holeSizeQueue = new ArrayDeque<>();
+        for (String input : secondLine) {
+            holeSizeQueue.offer(Integer.parseInt(input));
+        }
+
+        int initialWormCount = wormSizeStack.size();
+        int matchesCount = 0;
+
+        while (!wormSizeStack.isEmpty() && (!holeSizeQueue.isEmpty())) {
+
+            int worm = wormSizeStack.peek();
+            int hole = holeSizeQueue.peek();
+
+             //  Ако стойностите им са равни , червеят пасва на дупката и може да влезе в нея. След това трябва да премахнете и двамата от техните последователности
+            if (worm == hole) {
+                wormSizeStack.pop();
+                holeSizeQueue.poll();
+                matchesCount++;
+
+            } else {      В противен случай трябва да премахнете дупката и да намалите стойността на червея с 3
+                wormSizeStack.push(wormSizeStack.pop() - 3);
+
+                if (wormSizeStack.peek() <= 0) {   Ако стойността на червея стане равна или по- ниска 0 , премахнете го от последователността, преди да опитате да го съпоставите с дупката
+                    wormSizeStack.pop();
+                }
+                holeSizeQueue.poll();
+            }
+        }
+
+        if (matchesCount > 0) {       Ако има съвпадения, отпечатайте
+            System.out.println("Matches: " + matchesCount);
+
+        } else {                       Ако няма съвпадения, отпечатайте
+            System.out.println("There are no matches.");
+        }
+
+        if (wormSizeStack.isEmpty() && initialWormCount == matchesCount) {   Ако не са останали червеи и всички пасват дупка
+            System.out.println("Every worm found a suitable hole!");
+
+        } else if (wormSizeStack.isEmpty() && initialWormCount > matchesCount) {    Ако не са останали червеи, но само някои от тях пасват на дупка
+            System.out.println("Worms left: none");
+
+        } else if (!wormSizeStack.isEmpty()) {    Ако са останали червеи
+
+            List<Integer> reversedStack = new ArrayList<>(wormSizeStack);   // обръщаме реда на отпечатване на стека  !!!!!!!!!!
+            Collections.reverse(reversedStack);
+
+            System.out.println("Worms left: " + reversedStack.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+        }
+
+        if (holeSizeQueue.isEmpty()) {          Ако няма останали дупки
+            System.out.println("Holes left: none");
+
+        } else {                                Ако има останали дупки
+            System.out.println("Holes left: " + holeSizeQueue.stream().map(String::valueOf).collect(Collectors.joining(", ")));
+        }
+
+ -------------------------------------------------------------------------------------------------------------------------
+
+
+
