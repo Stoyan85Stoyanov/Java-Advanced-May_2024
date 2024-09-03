@@ -31,7 +31,6 @@ public class _02_Armory {
                     myRow--;
                     break;
 
-
                 case "down":
                     myRow++;
                     break;
