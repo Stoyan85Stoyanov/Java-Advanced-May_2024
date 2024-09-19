@@ -104,7 +104,6 @@ public class _02_RallyRacing {
                 totalKm += 10;
             }
 
-
             command = scanner.nextLine();
 
         }
