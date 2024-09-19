@@ -86,7 +86,6 @@ public class _02_Armory {
         }
     }
 
-
     private static void fillMatrix(char[][] matrix, Scanner scanner) {
         for (int row = 0; row < matrix.length; row++) {
             String[] input = scanner.nextLine().split(" ");
