@@ -7,7 +7,7 @@ BEGIN
            p.`salary`,
            sd.`dribbling`,
            sd.`speed`,
-           t.`name`                                      AS 'team_name'
+           t.`name`    AS 'team_name'
     FROM `players` AS p
              INNER JOIN `skills_data` AS sd
                         ON sd.`id` = p.`skills_data_id`
