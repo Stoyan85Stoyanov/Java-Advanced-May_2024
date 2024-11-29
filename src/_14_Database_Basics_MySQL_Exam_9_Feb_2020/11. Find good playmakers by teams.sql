@@ -1,6 +1,7 @@
 DELIMITER $$
 
 CREATE PROCEDURE udp_find_playmaker(min_dribble_points INT, team_name VARCHAR(45))
+
 BEGIN
     SELECT CONCAT_WS(' ', p.`first_name`, p.`last_name`) AS 'full_name',
            p.`age`,
