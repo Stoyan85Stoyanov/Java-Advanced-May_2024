@@ -1,4 +1,5 @@
 DELIMITER $$
+
 CREATE TABLE `deleted_employees`
 (
     `employee_id`   INT AUTO_INCREMENT,
