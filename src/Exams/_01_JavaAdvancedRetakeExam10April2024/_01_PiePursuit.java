@@ -28,6 +28,7 @@ public class _01_PiePursuit {
 
             if (contestant >= pie) {
                 contestant -= pie;
+
                 if (contestant > 0) {
                     contestantsQueue.offer(contestant);
                 }
