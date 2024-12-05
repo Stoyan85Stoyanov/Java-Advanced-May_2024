@@ -48,7 +48,7 @@ public class _01_PiePursuit {
         if (piesStack.isEmpty()) {
 
             if (!contestantsQueue.isEmpty()) {
-                System.out.println("We will have to wait for more pies to be baked!");
+                System.out.print("We will have to wait for more pies to be baked!%n");
                 String output = contestantsQueue.stream().map(String::valueOf).collect(Collectors.joining(", "));
                 System.out.println("Contestants left: " + output);
 
