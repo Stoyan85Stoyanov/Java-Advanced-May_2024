@@ -53,7 +53,7 @@ public class _01_PiePursuit {
                 System.out.println("Contestants left: " + output);
 
             } else {
-                System.out.println("We have a champion!");
+                System.out.print("We have a champion!%n");
             }
         } else {
             System.out.println("Our contestants need to rest!");
