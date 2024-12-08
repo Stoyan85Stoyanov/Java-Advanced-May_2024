@@ -56,7 +56,7 @@ public class _01_PiePursuit {
                 System.out.print("We have a champion!%n");
             }
         } else {
-            System.out.println("Our contestants need to rest!");
+            System.out.print("Our contestants need to rest!%n");
 
             List<Integer> reversedStack = new ArrayList<>(piesStack);
             Collections.reverse(reversedStack);
