@@ -77,7 +77,7 @@ public class LaunchPad {
                 spacecraftCounter++;
             }
         }
-        return builder.toString();
+        return builder.toString().trim();
     }
 }
 
