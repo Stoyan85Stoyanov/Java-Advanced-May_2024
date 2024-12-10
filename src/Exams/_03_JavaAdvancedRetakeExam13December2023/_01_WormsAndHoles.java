@@ -38,7 +38,7 @@ public class _01_WormsAndHoles {
             System.out.println("Matches: " + matches);
 
         } else {
-            System.out.println("There are no matches.");
+            System.out.println("There are no matches.%n");
         }
 
         if (wormSizeStack.isEmpty() && initialWormCount == matches) {
