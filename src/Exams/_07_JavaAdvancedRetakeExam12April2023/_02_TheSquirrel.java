@@ -80,7 +80,7 @@ public class _02_TheSquirrel {
 
                         if (col < 0) {
 
-                            System.out.println("The squirrel is out of the field.");
+                            System.out.print("The squirrel is out of the field.%n");
                             System.out.printf("Hazelnuts collected: %d%n", hazelnuts);
                             matrix[newRow][newCol] = ' ';
                             return;
