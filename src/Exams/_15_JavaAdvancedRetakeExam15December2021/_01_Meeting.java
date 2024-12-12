@@ -66,7 +66,8 @@ public class _01_Meeting {
             System.out.println();
 
         }else {
-            System.out.println("Females left: none");
+            System.out.print("Females left: none");
+            System.out.println();
 
         }
     }
